@@ -1,6 +1,6 @@
-###Capstone REST API
+### Capstone REST API
 
-#steps
+# steps
 
 1. Clone : git clone git@github.com:riskihia/capstone-project.git
 2. Tambahkan remote : git remote add origin git@github.com:riskihia/capstone-project.git

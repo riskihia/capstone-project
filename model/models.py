@@ -44,3 +44,27 @@ class LahanModel(db.Model, TimeStamp):
     lat = Column(Double, default=Null)
     lon = Column(Double, default=Null)
     pengguna = db.relationship("PenggunaModel", back_populates="lahan")
+
+
+# Todo:: buat model tanam
+
+
+# Todo:: buat model bibit
+
+
+# Todo:: buat model produk
+
+
+# Todo:: buat model rekomendasi_tanaman
+
+
+# Todo:: buat model keuangan
+
+
+# Todo:: buat model kategori_keuangan
+
+
+# Todo:: buat model iot_tool
+
+
+# Todo:: buat model hasil_tool

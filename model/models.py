@@ -7,6 +7,7 @@ from sqlalchemy import (
     ForeignKey,
     Null,
     DateTime,
+    Boolean,
     Integer,
     String,
     Text,
@@ -26,9 +27,11 @@ class PenggunaModel(db.Model, TimeStamp):
     username = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False, unique=True)
     photo = Column(String(250), unique=True)
-    premium = Column(String(250), nullable=True)
+    premium = Column(Boolean, nullable=True)
     token = Column(String(250), nullable=True, unique=True)
     terakhir_login = Column(DateTime, nullable=False)
+
+    lahan = db.relationship("LahanModel", back_populates="pengguna", lazy="dynamic")
 
 
 class LahanModel(db.Model, TimeStamp):
@@ -40,3 +43,4 @@ class LahanModel(db.Model, TimeStamp):
     alamat = Column(String(250), nullable=True)
     lat = Column(Double, default=Null)
     lon = Column(Double, default=Null)
+    pengguna = db.relationship("PenggunaModel", back_populates="lahan")

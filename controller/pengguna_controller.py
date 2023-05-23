@@ -7,6 +7,7 @@ from model.models import PenggunaModel
 from schemas import PenggunaSchema
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from service.pengguna_service import PenggunaService
 
 pengguna_blp = Blueprint("pengguna", __name__, description="Option in pengguna")
 
@@ -16,14 +17,7 @@ class Pengguna(MethodView):
     # decorator untuk documentation
     @pengguna_blp.response(200, PenggunaSchema(many=True))
     def get(self):
-        data = PenggunaModel.query.all()
-        pengguna_schema = PenggunaSchema(many=True)
-        response_data = {
-            "status_code": 200,
-            "msg": "Data retrieved successfully",
-            "data": pengguna_schema.dump(data),
-        }
-        return jsonify(response_data)
+        return jsonify(PenggunaService().get_all_user()), 200
 
     @pengguna_blp.arguments(PenggunaSchema)
     @pengguna_blp.response(200, PenggunaSchema)

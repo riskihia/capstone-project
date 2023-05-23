@@ -23,7 +23,7 @@ class TimeStamp:
 
 class PenggunaModel(db.Model, TimeStamp):
     __tablename__ = "pengguna"
-    id = Column(String(250), nullable=False, primary_key=True)
+    id = Column(String(250), nullable=False, primary_key=True, unique=True)
     username = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False, unique=True)
     photo = Column(String(250), unique=True)

@@ -1,5 +1,5 @@
 from flask import Flask
-from util.db import engine_uri, db
+from util.db import engine_uri, db, getconn
 from model import models
 from flask_smorest import Api
 
@@ -19,9 +19,12 @@ def create_app():
     app.config[
         "OPENAPI_SWAGGER_UI_URL"
     ] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-    app.config["SQLALCHEMY_DATABASE_URI"] = engine_uri
-
+    # app.config["SQLALCHEMY_DATABASE_URI"] = engine_uri
+    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
+
     db.init_app(app)
     api = Api(app)
     with app.app_context():

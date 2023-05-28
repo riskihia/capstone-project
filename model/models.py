@@ -60,23 +60,62 @@ class TanamanModel(db.Model, TimeStamp):
     harga_panen = Column(String(250), nullable=True)
 
 
-
 # Todo:: buat model bibit
-
+class BibitModel(db.Model, TimeStamp):
+    __tablename__ = "Bibit"
+    id = Column(String(250), nullable=False, primary_key=True)
+    nama = Column(String(250), nullable=False)
+    photo = Column(String(250), nullable=False)
+    deskripsi = Column(text(250), nullable=True)
+    harga_beli = Column(String(250) nullable=False)
+    harga_panen = Column(DateTime, nullable=True)
+    link_market = Column(DateTime, nullable=True)
 
 # Todo:: buat model produk
-
+class ProdukModel(db.Model, TimeStamp):
+    __tablename__ = "Produk"
+    id = Column(String(250), nullable=False, primary_key=True)
+    bibit_id = Column(String(250), ForeignKey("bibit.id"))
 
 # Todo:: buat model rekomendasi_tanaman
-
+class TanamanModel(db.Model, TimeStamp):
+    __tablename__ = "Tanaman"
+    id = Column(String(250), nullable=False, primary_key=True)
+    bibit_id = Column(String(250), ForeignKey("bibit.id"))
+    nama = Column(String(250), nullable=False)
+    deskripsi = Column(text(250), nullable=True)
 
 # Todo:: buat model keuangan
-
+class KeuanganModel(db.Model, TimeStamp):
+    __tablename__ = "Keuangan"
+    id = Column(String(250), nullable=False, primary_key=True)
+    tanaman_id = Column(String(250), ForeignKey("tanam.id"))
+    keterangan_id = Column(String(250), ForeignKey("kategori_keuangan.id"))
+    nama = Column(String(250), nullable=True)
+    unit = Column(Double, default=Null)
+    total = Column(String(250), nullable=True)
+    keterangan = Column(Double, default=Null)
 
 # Todo:: buat model kategori_keuangan
-
+class Kategori_KeuanganModel(db.Model, TimeStamp):
+    __tablename__ = "Kategori_Keuangan"
+    id = Column(String(250), nullable=False, primary_key=True)
+    nama = Column(String(250), nullable=True)
+    jenis = Column(Enum ("masuk", "keluar"), nullable=True)
 
 # Todo:: buat model iot_tool
+class Iot_ToolModel(db.Model, TimeStamp):
+    __tablename__ = "Iot_Tool"
+    id = Column(String(250), nullable=False, primary_key=True)
+    user_id = Column(String(250), ForeignKey("pengguna.id"))
 
 
 # Todo:: buat model hasil_tool
+class Hasil_ToolModel(db.Model, TimeStamp):
+    __tablename__ = "Hasil_Tool"
+    id = Column(String(250), nullable=False, primary_key=True)
+    tool_id = Column(String(250), ForeignKey("iot_tool.id"))
+    ph = Column(Double, default=Null)
+    kelembaban_tanah = Column(Double, default=Null)
+    kelembaban_udara = Column(Double, default=Null)
+    suhu = Column(Double, default=Null)

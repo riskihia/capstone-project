@@ -119,3 +119,5 @@ class Hasil_ToolModel(db.Model, TimeStamp):
     kelembaban_tanah = Column(Double, default=Null)
     kelembaban_udara = Column(Double, default=Null)
     suhu = Column(Double, default=Null)
+
+# apa yaaaa kiii coba

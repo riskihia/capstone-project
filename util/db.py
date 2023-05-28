@@ -2,6 +2,18 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from google.cloud.sql.connector import Connector, IPTypes
 
+<<<<<<< HEAD
+=======
+# engine_uri = "mysql+pymysql://{}:{}@{}:{}/{}".format(
+#     os.environ["MYSQL_USER"],
+#     os.environ["MYSQL_PASSWORD"],
+#     os.environ["MYSQL_HOST"],
+#     os.environ["MYSQL_PORT"],
+#     os.environ["MYSQL_DB"],
+# )
+
+engine_uri = "mysql+pymysql://root:@localhost:3306/taniland"
+>>>>>>> 70e082692ea83ffbb7441e427dd9e73c253441a3
 
 def getconn():
     with Connector() as connector:

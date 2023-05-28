@@ -12,6 +12,7 @@ from sqlalchemy import (
     String,
     Text,
     text,
+    Enum,
 )
 
 
@@ -47,6 +48,17 @@ class LahanModel(db.Model, TimeStamp):
 
 
 # Todo:: buat model tanam
+class TanamanModel(db.Model, TimeStamp):
+    __tablename__ = "Tanaman"
+    id = Column(String(250), nullable=False, primary_key=True)
+    bibit_id = Column(String(250), ForeignKey("bibit.id"))
+    lahan_id = Column(String(250), ForeignKey("lahan.id"))
+    product_id = Column(String(250), ForeignKey("produk.id"))
+    status = Column(Enum("plan", "exec", "close"), nullable=True)
+    tanggal_tanam = Column(DateTime, nullable=True)
+    tanggal_panen = Column(DateTime, nullable=True)
+    harga_panen = Column(String(250), nullable=True)
+
 
 
 # Todo:: buat model bibit

@@ -14,6 +14,22 @@ from flask_smorest import Api
 from controller.pengguna_controller import pengguna_blp
 from controller.lahan_controller import lahan_blp
 
+from google.cloud.sql.connector import Connector, IPTypes
+import pymysql, sqlalchemy, os
+
+
+def getconn():
+    with Connector() as connector:
+        conn = connector.connect(
+            "testing-flask-api:asia-southeast2:flask-api-db-instance",  # Cloud SQL Instance Connection Name
+            "pymysql",
+            user="riski-db",
+            password="riski123",
+            db="tani_aid",
+            ip_type=IPTypes.PUBLIC,  # IPTypes.PRIVATE for private IP
+        )
+        return conn
+
 
 def create_app():
     app = Flask(__name__)
@@ -27,12 +43,15 @@ def create_app():
     app.config[
         "OPENAPI_SWAGGER_UI_URL"
     ] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-    app.config["SQLALCHEMY_DATABASE_URI"] = engine_uri
 
-    # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://"
+    # ini untuk development
+    # app.config["SQLALCHEMY_DATABASE_URI"] = engine_uri
+
+    # ini untuk dpeloy
+    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://"
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
+
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-    # app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
 
     app.config["TIMEZONE"] = "Asia/Jakarta"
 

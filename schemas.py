@@ -7,14 +7,18 @@ class TimeStampSchema(Schema):
     deleted_at = fields.DateTime(required=True, dump_only=True)
 
 
-class PlainPenggunaSchema(TimeStampSchema):
-    id = fields.Str(required=True)
+class AuthPenggunaSchema(TimeStampSchema):
     username = fields.Str(required=True)
     email = fields.Str(required=True)
-    photo = fields.Str(required=True)
+
+
+class PlainPenggunaSchema(AuthPenggunaSchema):
+    id = fields.Str(dump_only=True)
+    email = fields.Str(required=True)
+    photo = fields.Str()
     premium = fields.Boolean(required=False)
     token = fields.Str(required=False)
-    terakhir_login = fields.DateTime(required=True)
+    terakhir_login = fields.DateTime(dump_only=True)
 
 
 class PlainLahanSchema(TimeStampSchema):

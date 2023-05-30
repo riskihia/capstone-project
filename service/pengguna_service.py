@@ -11,14 +11,17 @@ class PenggunaService:
         pass
 
     def get_all_pengguna(self):
-        data = PenggunaModel.query.all()
-        pengguna_schema = PenggunaSchema(many=True)
-        response_data = {
-            "status_code": 200,
-            "msg": "Data retrieved successfully",
-            "data": pengguna_schema.dump(data),
-        }
-        return response_data
+        try:
+            data = PenggunaModel.query.all()
+            pengguna_schema = PenggunaSchema(many=True)
+            response_data = {
+                "status_code": 200,
+                "msg": "Data retrieved successfully",
+                "data": pengguna_schema.dump(data),
+            }
+            return response_data
+        except Exception as e:
+            print(e)
 
     def tambah_pengguna(self, store_data):
         id = store_data["id"]

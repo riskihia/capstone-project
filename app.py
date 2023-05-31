@@ -3,8 +3,9 @@ from datetime import datetime
 import pytz
 
 
-# from util.db import engine_uri, db, getconn
-from util.db import engine_uri, db
+from util.db import engine_uri, db, getconn
+
+# from util.db import engine_uri, db
 
 
 from flask_jwt_extended import JWTManager
@@ -18,17 +19,17 @@ from google.cloud.sql.connector import Connector, IPTypes
 import pymysql, sqlalchemy, os
 
 
-# def getconn():
-#     with Connector() as connector:
-#         conn = connector.connect(
-#             "testing-flask-api:asia-southeast2:flask-api-db-instance",  # Cloud SQL Instance Connection Name
-#             "pymysql",
-#             user="riski-db",
-#             password="riski123",
-#             db="tani_aid",
-#             ip_type=IPTypes.PUBLIC,  # IPTypes.PRIVATE for private IP
-#         )
-#         return conn
+def getconn():
+    with Connector() as connector:
+        conn = connector.connect(
+            "testing-flask-api:asia-southeast2:flask-api-db-instance",  # Cloud SQL Instance Connection Name
+            "pymysql",
+            user="riski-db",
+            password="riski123",
+            db="tani_aid",
+            ip_type=IPTypes.PUBLIC,  # IPTypes.PRIVATE for private IP
+        )
+        return conn
 
 
 def create_app():
@@ -45,11 +46,11 @@ def create_app():
     ] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
     # ini untuk development
-    app.config["SQLALCHEMY_DATABASE_URI"] = engine_uri
+    # app.config["SQLALCHEMY_DATABASE_URI"] = engine_uri
 
     # ini untuk dpeloy
-    # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://"
-    # app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
+    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://"
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 

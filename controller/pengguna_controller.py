@@ -26,7 +26,29 @@ class PenggunaAuth(MethodView):
         return jsonify(PenggunaService().get_all_pengguna()), 200
 
     @pengguna_blp.arguments(AuthPenggunaSchema)
-    @pengguna_blp.response(200, PenggunaSchema)
+    # @pengguna_blp.response(200, PenggunaSchema)
+    @pengguna_blp.response(
+        202,
+        description="Berhasil upload data.",
+        example={
+            "data": {
+                "email": "user5@example.com",
+                "id": "daaa2c25-3550-47fa-869d-f5bcc0b5e675",
+                "photo": None,
+                "premium": False,
+                "terakhir_login": "Wed, 31 May 2023 07:26:54 GMT",
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4NTQ5MjgxNCwianRpIjoiMWRkMzUwYmUtNWRmMC00MWQzLWE2NzItOGE5MTNhMzRlZjM4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImRhYWEyYzI1LTM1NTAtNDdmYS04NjlkLWY1YmNjMGI1ZTY3NSIsIm5iZiI6MTY4NTQ5MjgxNCwiZXhwIjoxNjg1NDkzNzE0fQ.DmD_Cq74ualPQGYKtQp9aM2Mq16L3ukDFYsC50YUX0g",
+                "username": "user5",
+            },
+            "error": False,
+            "message": "User successfully registered",
+        },
+    )
+    @pengguna_blp.alt_response(
+        422,
+        description="Invalid request.",
+        example={"code": 400, "message": "Invalid email", "status": "Bad Request"},
+    )
     def post(self, store_data):
         return AuthService().tambah_pengguna(store_data)
 

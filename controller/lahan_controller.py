@@ -17,7 +17,7 @@ class Lahan(MethodView):
         lahan_schema = LahanSchema(many=True)
         response_data = {
             "status_code": 200,
-            "msg": "Data retrieved successfully",
+            "msg": "Data retrieveed successfully",
             "data": lahan_schema.dump(data),
         }
         return jsonify(response_data)

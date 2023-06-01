@@ -13,6 +13,7 @@ from flask_smorest import Api
 
 from controller.pengguna_controller import pengguna_blp
 from controller.lahan_controller import lahan_blp
+from controller.upload import upload_blp
 
 from google.cloud.sql.connector import Connector, IPTypes
 import pymysql, sqlalchemy, os
@@ -33,6 +34,7 @@ import pymysql, sqlalchemy, os
 
 def create_app():
     app = Flask(__name__)
+    app.config["UPLOAD_FOLDER"] = "static"
 
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Capstone REST API"
@@ -72,5 +74,6 @@ def create_app():
 
     api.register_blueprint(pengguna_blp)
     api.register_blueprint(lahan_blp)
+    api.register_blueprint(upload_blp)
 
     return app

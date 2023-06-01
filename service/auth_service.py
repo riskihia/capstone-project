@@ -10,8 +10,10 @@ from flask_jwt_extended import create_access_token, decode_token
 import uuid
 import datetime
 import re
+from werkzeug.utils import secure_filename
 
-from flask import jsonify
+import os
+from flask import jsonify, request, current_app
 
 
 class AuthService:
@@ -19,6 +21,11 @@ class AuthService:
         pass
 
     def tambah_pengguna(self, store_data):
+        file = request.files["file"]
+        filename = secure_filename(file.filename)
+        upload_folder = current_app.config["UPLOAD_FOLDER"]
+        file.save(os.path.join((upload_folder + "/" + filename)))
+
         username = store_data["username"]
         email = store_data["email"]
 
@@ -30,7 +37,7 @@ class AuthService:
             abort(400, message="Invalid email")
 
         store_data["id"] = str(uuid.uuid4())
-        store_data["photo"] = None
+        store_data["photo"] = filename
         store_data["premium"] = False
         store_data["terakhir_login"] = datetime.datetime.now()
         store_data["token"] = "hai"
@@ -62,29 +69,6 @@ class AuthService:
             }
             return jsonify(response)
         else:
-            # auth_header = request.headers.get("Authorization")
-            # if auth_header is None:
-            #     # Handle the case when Authorization header is missing
-            #     abort(401, error="True", message="Authentication failed")
-            # token = auth_header.split("Bearer ")[1]
-
-            # decoded_token = decode_token(token)
-            # user_id = decoded_token["identity"]
-
-            # user = PenggunaModel.query.get(user_id)
-            # if user.token == token:
-            #     # Token valid, lanjutkan dengan logika rute yang diotorisasi
-            #     # ...
-            #     return "hai"
-            # else:
-            #     # Token tidak valid, berikan respons error
-            #     response = {
-            #         "error": True,
-            #         "message": "Token is invalid",
-            #     }
-            #     return jsonify(response), 401
-
-            # Pengguna sudah ada di database, perbarui terakhir_login dan buat token
             store_data["token"] = create_access_token(identity=user.id)
 
             user.terakhir_login = datetime.datetime.now()

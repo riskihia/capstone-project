@@ -26,7 +26,7 @@ class PenggunaModel(db.Model, TimeStamp):
     id = Column(String(250), nullable=False, primary_key=True, unique=True)
     username = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False, unique=True)
-    photo = Column(String(250), unique=True)
+    photo = Column(String(250), unique=False)
     premium = Column(Boolean, nullable=True)
     token = Column(Text, nullable=True, unique=True)
     terakhir_login = Column(DateTime, nullable=False)

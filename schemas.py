@@ -7,6 +7,10 @@ class TimeStampSchema(Schema):
     deleted_at = fields.DateTime(required=True, dump_only=True)
 
 
+class AuthLogoutSchema(TimeStampSchema):
+    email = fields.Str(required=True, load_only=True)
+
+
 class AuthPenggunaSchema(TimeStampSchema):
     username = fields.Str(required=True)
     email = fields.Str(required=True)

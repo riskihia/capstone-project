@@ -7,6 +7,7 @@ from util.db import db
 from model.models import PenggunaModel
 from schemas import PenggunaSchema
 from schemas import AuthPenggunaSchema
+from schemas import AuthLogoutSchema
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from service.pengguna_service import PenggunaService
@@ -17,6 +18,15 @@ from flask_jwt_extended import jwt_required
 pengguna_blp = Blueprint(
     "pengguna", __name__, url_prefix="/api/v1", description="Option in pengguna"
 )
+
+
+@pengguna_blp.route("/auth/logout")
+class PenggunaAuthLogout(MethodView):
+    @jwt_required()
+    @pengguna_blp.arguments(AuthLogoutSchema)
+    @pengguna_blp.response(200, AuthLogoutSchema)
+    def post(self, store_data):
+        return AuthService().pengguna_logout(store_data)
 
 
 @pengguna_blp.route("/auth")
@@ -43,11 +53,6 @@ class PenggunaAuth(MethodView):
             "error": False,
             "message": "User successfully registered",
         },
-    )
-    @pengguna_blp.alt_response(
-        422,
-        description="Invalid request.",
-        example={"code": 400, "message": "Invalid email", "status": "Bad Request"},
     )
     def post(self, store_data):
         return AuthService().tambah_pengguna(store_data)

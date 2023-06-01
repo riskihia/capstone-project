@@ -16,14 +16,33 @@ upload_blp = Blueprint(
     "upload", __name__, url_prefix="/api/v1", description="Option in upload"
 )
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-key-bucket.json"
+
+def get_unique_filename(username, filename):
+    unique_id = str(uuid.uuid4().hex)  # Generate unique ID
+    prefix = f"{username}_"
+    secure_filename_str = secure_filename(filename)
+    unique_filename = f"{prefix}{unique_id}_{secure_filename_str}"
+    return unique_filename
 
 
 @upload_blp.route("/image")
 class Image(MethodView):
     def get(self):
-        image_url = "https://storage.googleapis.com/flask-api-bucket/Capture.PNG"
-        return jsonify(image_url=image_url)
+        storage_client = storage.Client()
+        bucket_name = "flask-api-bucket"
+        folder_name = "profile"
+        image_filename = "riski_a032b4c4190e4e6f8540033be4ac57ea_x.PNG"
+        image_path = f"{folder_name}/{image_filename}"
+
+        # Mendapatkan URL gambar dari cloud storage bucket
+        def get_image_url(bucket_name, image_path):
+            bucket = storage_client.get_bucket(bucket_name)
+            blob = bucket.blob(image_path)
+            return blob.public_url
+
+        # Mengambil link gambar
+        image_url = get_image_url(bucket_name, image_path)
+        return jsonify(image_url)
 
 
 @upload_blp.route("/upload")
@@ -41,7 +60,9 @@ class Pengguna(MethodView):
         folder_name = "profile"
 
         file = request.files["file"]
-        filename = secure_filename(file.filename)
+        # filename = secure_filename(file.filename)
+        username = "riski"
+        filename = get_unique_filename(username, file.filename)
         destination_blob_name = f"{folder_name}/{filename}"
 
         # Upload file directly to the cloud storage bucket

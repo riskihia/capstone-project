@@ -5,7 +5,7 @@ import uuid, datetime
 
 from util.db import db
 from model.models import PenggunaModel
-from schemas import PenggunaSchema
+from schemas import PlainPenggunaSchema
 from schemas import AuthPenggunaSchema
 from schemas import AuthLogoutSchema
 
@@ -31,7 +31,7 @@ class PenggunaAuthLogout(MethodView):
 
 @pengguna_blp.route("/auth")
 class PenggunaAuth(MethodView):
-    @pengguna_blp.response(200, PenggunaSchema(many=True))
+    @pengguna_blp.response(200, PlainPenggunaSchema(many=True))
     def get(self):
         return jsonify(PenggunaService().get_all_pengguna()), 200
 
@@ -47,7 +47,7 @@ class PenggunaAuth(MethodView):
                 "photo": None,
                 "premium": False,
                 "terakhir_login": "Wed, 31 May 2023 07:26:54 GMT",
-                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4NTQ5MjgxNCwianRpIjoiMWRkMzUwYmUtNWRmMC00MWQzLWE2NzItOGE5MTNhMzRlZjM4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImRhYWEyYzI1LTM1NTAtNDdmYS04NjlkLWY1YmNjMGI1ZTY3NSIsIm5iZiI6MTY4NTQ5MjgxNCwiZXhwIjoxNjg1NDkzNzE0fQ.DmD_Cq74ualPQGYKtQp9aM2Mq16L3ukDFYsC50YUX0g",
+                "token": "ukDFYsC50YUX0g",
                 "username": "user5",
             },
             "error": False,
@@ -56,17 +56,3 @@ class PenggunaAuth(MethodView):
     )
     def post(self, store_data):
         return AuthService().tambah_pengguna(store_data)
-
-
-@pengguna_blp.route("/pengguna")
-class Pengguna(MethodView):
-    # decorator untuk documentation
-    @pengguna_blp.response(200, PenggunaSchema(many=True))
-    def get(self):
-        return jsonify(PenggunaService().get_all_pengguna()), 200
-
-    @jwt_required(optional=True)
-    @pengguna_blp.arguments(PenggunaSchema)
-    @pengguna_blp.response(200, PenggunaSchema)
-    def post(self, store_data):
-        return PenggunaService().tambah_pengguna(store_data)

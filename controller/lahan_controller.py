@@ -4,20 +4,24 @@ from flask import jsonify
 
 from util.db import db
 from model.models import LahanModel
-from schemas import LahanSchema
+from schemas import PostLahanSchema
 
-lahan_blp = Blueprint("lahan", __name__, description="Option in lahan")
+from service.lahan_service import LahanService
+from flask_jwt_extended import jwt_required
+
+lahan_blp = Blueprint(
+    "lahan", __name__, url_prefix="/api/v1", description="Option in lahan"
+)
 
 
 @lahan_blp.route("/lahan")
 class Lahan(MethodView):
-    @lahan_blp.response(200, LahanSchema(many=True))
+    @jwt_required()
+    @lahan_blp.response(200, PostLahanSchema(many=True))
     def get(self):
-        data = LahanModel.query.all()
-        lahan_schema = LahanSchema(many=True)
-        response_data = {
-            "status_code": 200,
-            "msg": "Data retrieved successfully",
-            "data": lahan_schema.dump(data),
-        }
-        return jsonify(response_data)
+        return LahanService().get_all_lahan()
+
+    @jwt_required()
+    @lahan_blp.arguments(PostLahanSchema)
+    def post(self, lahan_data):
+        return LahanService().post_lahan(lahan_data)

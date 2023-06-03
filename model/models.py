@@ -39,11 +39,19 @@ class LahanModel(db.Model, TimeStamp):
     id = Column(String(250), nullable=False, primary_key=True)
     user_id = Column(String(250), ForeignKey("pengguna.id"))
     nama = Column(String(250), nullable=False)
+    photo = Column(String(250), unique=False)
     luas = Column(Double, nullable=False)
     alamat = Column(String(250), nullable=True)
     lat = Column(Double, default=Null)
     lon = Column(Double, default=Null)
     pengguna = db.relationship("PenggunaModel", back_populates="lahan")
+
+
+class LahanImageModel(db.Model, TimeStamp):
+    __tablename__ = "lahan_image"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nama = Column(String(250), nullable=False)
+    photo = Column(String(250), unique=False)
 
 
 # # Todo:: buat model tanam

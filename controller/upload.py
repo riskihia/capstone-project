@@ -7,6 +7,7 @@ from util.db import db
 from flask import current_app
 import os
 from google.cloud import storage
+from schemas import UploadSchema
 
 from flask_jwt_extended import jwt_required
 
@@ -54,6 +55,7 @@ class Pengguna(MethodView):
         image_path = os.path.join(current_app.config["UPLOAD_FOLDER"], image_filename)
         return image_path
 
+    # @upload_blp.arguments(UploadSchema)
     def post(self):
         storage_client = storage.Client()
         bucket_name = "flask-api-bucket"

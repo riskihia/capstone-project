@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import pytz
 
 from util.blocklist import BLOCKLIST
+from flask_migrate import Migrate
 
 # from util.db import db, getconn
 
@@ -16,6 +17,8 @@ from flask_smorest import Api
 from controller.pengguna_controller import pengguna_blp
 from controller.lahan_controller import lahan_blp
 from controller.upload import upload_blp
+from controller.user_controller import user_blp
+from controller.lahan_image_controller import lahan_image_blp
 
 from google.cloud.sql.connector import Connector, IPTypes
 import pymysql, sqlalchemy, os
@@ -50,11 +53,11 @@ def create_app():
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-key-bucket.json"
 
     # ini untuk development
-    # app.config["SQLALCHEMY_DATABASE_URI"] = engine_uri
+    app.config["SQLALCHEMY_DATABASE_URI"] = engine_uri
 
     # ini untuk dpeloy
-    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://"
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
+    # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://"
+    # app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -69,6 +72,7 @@ def create_app():
         datetime.now(timezone)
 
     db.init_app(app)
+    migrate = Migrate(app, db)
     api = Api(app)
 
     app.config["JWT_SECRET_KEY"] = "283674515990178098796700912839185640515"
@@ -90,7 +94,13 @@ def create_app():
     @jwt.expired_token_loader
     def expired_token_callback(jwt_header, jwt_payload):
         return (
-            jsonify({"message": "The token has expired.", "error": "token_expired"}),
+            jsonify(
+                {
+                    "message": "Token expired",
+                    "error": True,
+                    "data": None,
+                }
+            ),
             401,
         )
 
@@ -98,7 +108,11 @@ def create_app():
     def invalid_token_callback(error):
         return (
             jsonify(
-                {"message": "Signature verification failed.", "error": "invalid_token"}
+                {
+                    "message": "Invalid token",
+                    "error": True,
+                    "data": None,
+                }
             ),
             401,
         )
@@ -115,11 +129,10 @@ def create_app():
             401,
         )
 
-    with app.app_context():
-        db.create_all()
-
     api.register_blueprint(pengguna_blp)
     api.register_blueprint(lahan_blp)
     api.register_blueprint(upload_blp)
+    api.register_blueprint(user_blp)
+    api.register_blueprint(lahan_image_blp)
 
     return app

@@ -59,19 +59,21 @@ class AuthService:
         if not validate_email(email):
             abort(400, message="Invalid email")
 
-        store_data["id"] = str(uuid.uuid4())
         store_data["photo"] = self.get_image_urls()
         store_data["premium"] = False
         store_data["terakhir_login"] = datetime.datetime.now()
         store_data["token"] = "hai"
 
         # Cek apakah pengguna sudah ada di database
-        user = PenggunaModel.query.filter(
-            PenggunaModel.email == store_data["email"]
-        ).first()
+        user = (
+            PenggunaModel.query.filter(PenggunaModel.email == store_data["email"])
+            .filter(PenggunaModel.deleted_at.is_(None))
+            .first()
+        )
 
         if user is None:
             # Buat pengguna baru dan simpan ke database
+            store_data["id"] = str(uuid.uuid4())
             new_user = PenggunaModel(**store_data)
             db.session.add(new_user)
             db.session.commit()
@@ -90,7 +92,7 @@ class AuthService:
                 "message": "User successfully registered",
                 "data": store_data,
             }
-            return jsonify(response)
+            return jsonify(response), 201
         else:
             store_data["token"] = create_access_token(identity=user.id)
 
@@ -98,12 +100,13 @@ class AuthService:
             user.token = store_data["token"]
             db.session.commit()
 
+            store_data["id"] = user.id
             response = {
                 "error": False,
                 "message": "User successfully logged in",
                 "data": store_data,
             }
-            return jsonify(response)
+            return jsonify(response), 200
 
     def pengguna_logout(self, store_data):
         if not store_data or "email" not in store_data:
@@ -111,7 +114,11 @@ class AuthService:
             return jsonify(response), 400
 
         email = store_data["email"]
-        user = PenggunaModel.query.filter(PenggunaModel.email == email).first()
+        user = (
+            PenggunaModel.query.filter(PenggunaModel.email == email)
+            .filter(PenggunaModel.deleted_at.is_(None))
+            .first()
+        )
 
         if user:
             user.token = None

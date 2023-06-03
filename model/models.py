@@ -28,7 +28,7 @@ class PenggunaModel(db.Model, TimeStamp):
     email = Column(String(250), nullable=False, unique=True)
     photo = Column(String(250), unique=False)
     premium = Column(Boolean, nullable=True)
-    token = Column(Text, nullable=True, unique=True)
+    token = Column(Text, nullable=True)
     terakhir_login = Column(DateTime, nullable=False)
 
     lahan = db.relationship("LahanModel", back_populates="pengguna", lazy="dynamic")

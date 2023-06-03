@@ -15,7 +15,13 @@ class AuthLogoutSchema(TimeStampSchema):
 class AuthPenggunaSchema(TimeStampSchema):
     username = fields.Str(required=True)
     email = fields.Str(required=True)
-
+    
+class UserPenggunaSchema(AuthPenggunaSchema):
+    id = fields.Str(dump_only=True)
+    email = fields.Str(required=True)
+    photo = fields.Str()
+    premium = fields.Boolean(required=False)
+    terakhir_login = fields.DateTime(dump_only=True)
 
 class PlainPenggunaSchema(AuthPenggunaSchema):
     id = fields.Str(dump_only=True)
@@ -26,12 +32,7 @@ class PlainPenggunaSchema(AuthPenggunaSchema):
     terakhir_login = fields.DateTime(dump_only=True)
 
 
-class UserPenggunaSchema(AuthPenggunaSchema):
-    id = fields.Str(dump_only=True)
-    email = fields.Str(required=True)
-    photo = fields.Str()
-    premium = fields.Boolean(required=False)
-    terakhir_login = fields.DateTime(dump_only=True)
+
 
 
 class LahanImageSchema(TimeStampSchema):

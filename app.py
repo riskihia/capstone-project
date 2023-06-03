@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 import pytz
 
 from util.blocklist import BLOCKLIST
-from flask_migrate import Migrate
 
 # from util.db import db, getconn
 
@@ -72,8 +71,10 @@ def create_app():
         datetime.now(timezone)
 
     db.init_app(app)
-    migrate = Migrate(app, db)
     api = Api(app)
+
+    with app.app_context():
+        db.create_all()
 
     app.config["JWT_SECRET_KEY"] = "283674515990178098796700912839185640515"
     jwt = JWTManager(app)

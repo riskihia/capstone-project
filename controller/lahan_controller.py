@@ -1,9 +1,5 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from flask import jsonify
-
-from util.config import db
-from model.models import LahanModel
 from schemas import PostLahanSchema
 
 from service.lahan_service import LahanService

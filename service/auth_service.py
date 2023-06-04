@@ -1,23 +1,12 @@
 from model.models import PenggunaModel
-from schemas import PenggunaSchema
 from util.config import db
-
-from flask_jwt_extended.exceptions import JWTDecodeError
-
-from sqlalchemy import Null
 from flask_smorest import abort
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-
 from flask_jwt_extended import create_access_token, create_access_token, get_jwt
-import uuid
-import datetime
-import re
-from werkzeug.utils import secure_filename
+import uuid, datetime, re
 from google.cloud import storage
 
 from util.blocklist import BLOCKLIST
-import os
-from flask import jsonify, request, current_app
+from flask import jsonify
 
 
 class AuthService:
@@ -40,13 +29,6 @@ class AuthService:
         # Mengambil link gambar
         image_url = get_image_url(bucket_name, image_path)
         return image_url
-
-    def get_unique_filename(username, filename):
-        unique_id = str(uuid.uuid4().hex)  # Generate unique ID
-        prefix = f"{username}_"
-        secure_filename_str = secure_filename(filename)
-        unique_filename = f"{prefix}{unique_id}_{secure_filename_str}"
-        return unique_filename
 
     def tambah_pengguna(self, store_data):
         username = store_data["username"]

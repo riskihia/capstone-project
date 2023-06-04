@@ -27,7 +27,6 @@ class UserPenggunaSchema(AuthPenggunaSchema):
 
 class PlainPenggunaSchema(AuthPenggunaSchema):
     id = fields.Str(dump_only=True)
-    email = fields.Str(required=True)
     photo = fields.Str()
     premium = fields.Boolean(required=False)
     token = fields.Str(required=False)

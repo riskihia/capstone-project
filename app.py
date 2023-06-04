@@ -5,6 +5,7 @@ import pytz, os
 from util.config import db, Config
 from flask_smorest import Api
 from util import jwt_config
+from util.dumy_data import populate_data
 
 
 def create_app():
@@ -24,12 +25,12 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        populate_data()
 
     blueprints = [
-        pengguna_controller.pengguna_blp,
-        lahan_controller.lahan_blp,
-        upload.upload_blp,
         user_controller.user_blp,
+        lahan_controller.lahan_blp,
+        auth_controller.auth_blp,
         lahan_image_controller.lahan_image_blp,
     ]
 

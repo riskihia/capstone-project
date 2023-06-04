@@ -2,7 +2,7 @@ from flask import jsonify
 from model.models import PenggunaModel
 from schemas import PlainPenggunaSchema
 from schemas import UserLahanSchema
-from util.db import db
+from util.config import db
 
 from flask_smorest import abort
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError

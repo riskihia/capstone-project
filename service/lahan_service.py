@@ -2,7 +2,7 @@ import random
 import uuid
 
 from model.models import LahanImageModel, LahanModel
-from util.db import db
+from util.config import db
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from flask_smorest import abort
 from schemas import PostLahanSchema

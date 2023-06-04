@@ -3,7 +3,7 @@ from flask_smorest import Blueprint, abort
 from flask import jsonify
 import uuid, datetime
 
-from util.db import db
+from util.config import db
 from model.models import PenggunaModel
 from schemas import PlainPenggunaSchema
 from schemas import AuthPenggunaSchema

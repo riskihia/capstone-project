@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask import jsonify
 
-from util.db import db
+from util.config import db
 from google.cloud import storage
 
 from service.lahan_image_service import LahanImageService

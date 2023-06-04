@@ -1,6 +1,6 @@
 from model.models import PenggunaModel
 from schemas import PenggunaSchema
-from util.db import db
+from util.config import db
 
 from flask_jwt_extended.exceptions import JWTDecodeError
 

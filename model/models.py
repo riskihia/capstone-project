@@ -1,4 +1,4 @@
-from util.db import db
+from util.config import db
 import datetime
 import uuid
 from sqlalchemy import (
@@ -44,7 +44,7 @@ class LahanModel(db.Model, TimeStamp):
     alamat = Column(String(250), nullable=True)
     lat = Column(Double, nullable=True)
     lon = Column(Double, nullable=True)
-    pengguna = db.relationship("PenggunaModel", back_populates="lahan", lazy="dynamic")
+    pengguna = db.relationship("PenggunaModel", back_populates="lahan")
 
 
 class LahanImageModel(db.Model, TimeStamp):

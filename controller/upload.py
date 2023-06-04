@@ -3,7 +3,7 @@ from flask_smorest import Blueprint, abort
 from flask import jsonify, request, send_from_directory
 import uuid, datetime
 
-from util.db import db
+from util.config import db
 from flask import current_app
 import os
 from google.cloud import storage

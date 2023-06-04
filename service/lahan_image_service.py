@@ -4,7 +4,7 @@ from flask import request, jsonify
 from google.cloud import storage
 from schemas import LahanImageSchema
 
-from util.db import db
+from util.config import db
 from model.models import LahanImageModel
 
 

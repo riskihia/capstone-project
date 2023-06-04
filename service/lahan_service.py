@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from flask_smorest import abort
 from schemas import PostLahanSchema
 from flask import jsonify
+from flask_jwt_extended import get_jwt_identity
 
 
 class LahanService:
@@ -14,9 +15,15 @@ class LahanService:
         pass
 
     def get_all_lahan(self):
-        try:
-            data = LahanModel.query.filter(LahanModel.deleted_at.is_(None)).all()
+        current_user = get_jwt_identity()
 
+        try:
+            # data = LahanModel.query.filter(LahanModel.deleted_at.is_(None)).all()
+            data = (
+                LahanModel.query.filter_by(user_id=current_user)
+                .filter(LahanModel.deleted_at.is_(None))
+                .all()
+            )
             lahan_schema = PostLahanSchema(many=True)
 
             response_data = {

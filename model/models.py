@@ -42,9 +42,9 @@ class LahanModel(db.Model, TimeStamp):
     photo = Column(String(250), unique=False)
     luas = Column(Double, nullable=False)
     alamat = Column(String(250), nullable=True)
-    lat = Column(Double, default=Null)
-    lon = Column(Double, default=Null)
-    pengguna = db.relationship("PenggunaModel", back_populates="lahan")
+    lat = Column(Double, nullable=True)
+    lon = Column(Double, nullable=True)
+    pengguna = db.relationship("PenggunaModel", back_populates="lahan", lazy="dynamic")
 
 
 class LahanImageModel(db.Model, TimeStamp):

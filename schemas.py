@@ -15,13 +15,15 @@ class AuthLogoutSchema(TimeStampSchema):
 class AuthPenggunaSchema(TimeStampSchema):
     username = fields.Str(required=True)
     email = fields.Str(required=True)
-    
+
+
 class UserPenggunaSchema(AuthPenggunaSchema):
     id = fields.Str(dump_only=True)
     email = fields.Str(required=True)
     photo = fields.Str()
     premium = fields.Boolean(required=False)
     terakhir_login = fields.DateTime(dump_only=True)
+
 
 class PlainPenggunaSchema(AuthPenggunaSchema):
     id = fields.Str(dump_only=True)
@@ -30,9 +32,6 @@ class PlainPenggunaSchema(AuthPenggunaSchema):
     premium = fields.Boolean(required=False)
     token = fields.Str(required=False)
     terakhir_login = fields.DateTime(dump_only=True)
-
-
-
 
 
 class LahanImageSchema(TimeStampSchema):
@@ -46,13 +45,13 @@ class PostLahanSchema(TimeStampSchema):
     image = fields.Str(dump_only=True)
     luas = fields.Float(required=True)
     alamat = fields.Str(required=False)
-    lat = fields.Float(required=False)
-    lon = fields.Float(required=False)
+    lat = fields.Float(required=False, allow_none=True)
+    lon = fields.Float(required=False, allow_none=True)
 
 
 class PlainLahanSchema(TimeStampSchema):
     id = fields.Str(required=True, load_only=True)
-    username = fields.Str(required=True)
+    nama = fields.Str(required=True)
     photo = fields.Str()
     luas = fields.Float(required=True)
     alamat = fields.Str(required=False)

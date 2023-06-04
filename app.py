@@ -31,7 +31,6 @@ def create_app():
         user_controller.user_blp,
         lahan_controller.lahan_blp,
         auth_controller.auth_blp,
-        lahan_image_controller.lahan_image_blp,
     ]
 
     for bp in blueprints:

@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required
 from service.auth_service import AuthService
 from schemas import PlainPenggunaSchema, AuthLogoutSchema, AuthPenggunaSchema
 from util.example_response import GetAuthExample
+from util.example_response import LogoutAuthExample
 
 auth_blp = Blueprint(
     "auth", __name__, url_prefix="/api/v1", description="Option in pengguna"
@@ -15,6 +16,7 @@ class PenggunaAuthLogout(MethodView):
     @jwt_required()
     @auth_blp.arguments(AuthLogoutSchema)
     @auth_blp.response(200, AuthLogoutSchema)
+    @auth_blp.response(200, example=LogoutAuthExample)
     def post(self, store_data):
         return AuthService().pengguna_logout(store_data)
 

@@ -1,11 +1,13 @@
+import datetime
 import random
 import uuid
+from sqlalchemy import text
 
 from model.models import LahanImageModel, LahanModel
 from util.config import db
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from flask_smorest import abort
-from schemas import PostLahanSchema
+from schemas import GetLahanSchema
 from flask import jsonify
 from flask_jwt_extended import get_jwt_identity
 
@@ -14,7 +16,7 @@ class LahanService:
     def __init__(self):
         pass
 
-    def get_all_lahan(self):
+    def get_user_lahan(self):
         current_user = get_jwt_identity()
 
         try:
@@ -24,7 +26,7 @@ class LahanService:
                 .filter(LahanModel.deleted_at.is_(None))
                 .all()
             )
-            lahan_schema = PostLahanSchema(many=True)
+            lahan_schema = GetLahanSchema(many=True)
 
             response_data = {
                 "error": False,
@@ -55,3 +57,11 @@ class LahanService:
         except SQLAlchemyError:
             # Kesalahan umum saat menyisipkan item
             abort(500, message="An error occurred while inserting item")
+
+    def delete_lahan(self, lahan_id):
+        # lahan = LahanModel.query.filter_by(id=lahan_id).first()
+        # is_deleted = LahanModel.query.filter(
+        #     LahanModel.deleted_at.is_(None), LahanModel.id == lahan_id
+        # ).first()
+        print(lahan_id)
+        return jsonify({"hai": "hai"})

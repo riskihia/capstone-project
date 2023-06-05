@@ -3,8 +3,6 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required
 from service.auth_service import AuthService
 from schemas import PlainPenggunaSchema, AuthLogoutSchema, AuthPenggunaSchema
-from flask import jsonify
-from service.user_service import UserService
 from util.example_response import GetAuthExample
 
 auth_blp = Blueprint(
@@ -26,7 +24,7 @@ class PenggunaAuth(MethodView):
     @auth_blp.response(200, PlainPenggunaSchema(many=True))
     def get(self):
         # return UserService().get_all_pengguna()
-        return jsonify(UserService().get_all_pengguna()), 200
+        return AuthService().get_all_pengguna()
 
     @auth_blp.arguments(AuthPenggunaSchema)
     @auth_blp.response(

@@ -38,6 +38,16 @@ class LahanImageSchema(TimeStampSchema):
     photo = fields.Str(dump_only=True)
 
 
+class GetLahanSchema(TimeStampSchema):
+    id = fields.Str()
+    nama = fields.Str(required=True)
+    image = fields.Str(dump_only=True)
+    luas = fields.Float(required=True)
+    alamat = fields.Str(required=False)
+    lat = fields.Float(required=False, allow_none=True)
+    lon = fields.Float(required=False, allow_none=True)
+
+
 class PostLahanSchema(TimeStampSchema):
     user_id = fields.Str()
     nama = fields.Str(required=True)

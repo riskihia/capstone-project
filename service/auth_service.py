@@ -4,6 +4,7 @@ from flask_smorest import abort
 from flask_jwt_extended import create_access_token, create_access_token, get_jwt
 import uuid, datetime, re
 from google.cloud import storage
+from schemas import PlainPenggunaSchema
 
 from util.blocklist import BLOCKLIST
 from flask import jsonify
@@ -29,6 +30,21 @@ class AuthService:
         # Mengambil link gambar
         image_url = get_image_url(bucket_name, image_path)
         return image_url
+
+    def get_all_pengguna(self):
+        try:
+            data = PenggunaModel.query.filter(PenggunaModel.deleted_at.is_(None)).all()
+
+            pengguna_schema = PlainPenggunaSchema(many=True)
+
+            response_data = {
+                "error": False,
+                "message": "User data fetched successfully",
+                "data": pengguna_schema.dump(data),
+            }
+            return jsonify(response_data), 200
+        except Exception as e:
+            print(e)
 
     def tambah_pengguna(self, store_data):
         username = store_data["username"]

@@ -80,7 +80,7 @@ def insert_pengguna():
                 "luas": i * 100.0,
                 "alamat": f"Alamat {i}",
                 "photo": photo,
-                "lat": i * 1.1,
+                "lat": None,
                 "lon": i * 1.1,
             }
             lahan_data.append(lahan)

@@ -20,11 +20,19 @@ class LahanService:
     def get_tanam_detail(self, lahan_id):
         try:
             tanam = TanamModel.query.filter_by(lahan_id=lahan_id).first()
-            tanam_schema = TanamSchema()
+            # print(tanam)
+            tanam = {
+                "id": tanam.id,
+                "bibit_id": tanam.bibit_id,
+                "lahan_id": tanam.lahan_id,
+                "jarak": tanam.jarak,
+                "status": tanam.status,
+                "tanggal_tanam": tanam.tanggal_tanam,
+            }
             response_data = {
                 "error": False,
-                "message": "Lahan fetched successfully",
-                "data": tanam_schema.dump(tanam),
+                "message": "Lahan fetched successfullys",
+                "data": tanam,
             }
             return jsonify(response_data), 200
         except Exception as e:

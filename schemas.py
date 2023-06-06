@@ -94,6 +94,7 @@ class GetLahanSchema(TimeStampSchema):
 
 class TanamGetLahanSchema(GetLahanSchema):
     tanam = fields.List(fields.Nested(AllTanamSchema), dump_only=True, default=[])
+    # tanam = fields.Nested(AllTanamSchema, dump_only=True, default={})
 
 
 class PostLahanSchema(TimeStampSchema):

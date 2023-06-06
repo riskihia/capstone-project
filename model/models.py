@@ -51,7 +51,7 @@ class LahanModel(db.Model, TimeStamp):
 class TanamModel(db.Model, TimeStamp):
     __tablename__ = "tanam"
     id = Column(String(250), nullable=False, primary_key=True)
-    # bibit_id = Column(String(250), ForeignKey("bibit.id"))
+    bibit_id = Column(String(250), ForeignKey("bibit.id"))
     lahan_id = Column(String(250), ForeignKey("lahan.id"))
     jarak = Column(Integer, server_default="30")
     status = Column(Enum("plan", "exec", "close"))
@@ -60,6 +60,9 @@ class TanamModel(db.Model, TimeStamp):
     jumlah_panen = Column(Integer)
     harga_panen = Column(Integer)
     lahan = db.relationship("LahanModel", back_populates="tanam")
+    bibit = db.relationship("BibitModel", back_populates="tanam")
+
+    aktivitas = db.relationship("AktivitasModel", back_populates="tanam", lazy="joined")
 
 
 class LahanImageModel(db.Model, TimeStamp):
@@ -69,25 +72,27 @@ class LahanImageModel(db.Model, TimeStamp):
     photo = Column(String(250), unique=False)
 
 
-# class BibitModel(db.Model, TimeStamp):
-#     __tablename__ = "bibit"
-#     id = Column(String(250), nullable=False, primary_key=True)
-#     nama = Column(String(250))
-#     photo = Column(String(250))
-#     deskripsi = Column(Text, nullable=True)
-#     harga_beli = Column(Integer)
-#     jenis = Column(Enum("sayuran", "buah"))
-#     link_market = Column(String(250), server_default="tani.iyabos.com/marketplace")
+class BibitModel(db.Model, TimeStamp):
+    __tablename__ = "bibit"
+    id = Column(String(250), nullable=False, primary_key=True)
+    nama = Column(String(250))
+    photo = Column(String(250))
+    deskripsi = Column(Text, nullable=True)
+    harga_beli = Column(Integer)
+    jenis = Column(Enum("sayuran", "buah"))
+    link_market = Column(String(250), server_default="tani.iyabos.com/marketplace")
+    tanam = db.relationship("TanamModel", back_populates="bibit", lazy="joined")
 
 
-# class AktivitasModel(db.Model, TimeStamp):
-#     __tablename__ = "aktivitas"
-#     id = Column(String(250), nullable=False, primary_key=True)
-#     tanam_id = Column(String(250), ForeignKey("tanam.id"))
-#     nama = Column(String(250))
-#     keterangan = Column(Text, nullable=True)
-#     pupuk = Column(Integer)
-#     tanggal_aktivitas = Column(DateTime, nullable=True)
+class AktivitasModel(db.Model, TimeStamp):
+    __tablename__ = "aktivitas"
+    id = Column(String(250), nullable=False, primary_key=True)
+    tanam_id = Column(String(250), ForeignKey("tanam.id"))
+    nama = Column(String(250))
+    keterangan = Column(Text, nullable=True)
+    pupuk = Column(Integer)
+    tanggal_aktivitas = Column(DateTime, nullable=True)
+    tanam = db.relationship("TanamModel", back_populates="aktivitas")
 
 
 # # Todo:: buat model tanam

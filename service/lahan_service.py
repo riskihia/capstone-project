@@ -47,7 +47,12 @@ class LahanService:
             return jsonify(response_data), 200
 
         except Exception as e:
-            print(e)
+            error_message = str(e)  # Get the error message as a string
+            response_data = {
+                "error": True,
+                "message": "An error occurred: " + error_message,
+            }
+            return jsonify(response_data), 500
 
     def get_user_lahan(self):
         current_user = get_jwt_identity()

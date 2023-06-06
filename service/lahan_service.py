@@ -2,12 +2,13 @@ import datetime
 import random
 import uuid
 from sqlalchemy import text
+import traceback
 
-from model.models import LahanImageModel, LahanModel
+from model.models import LahanImageModel, LahanModel, TanamModel
 from util.config import db
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from flask_smorest import abort
-from schemas import GetLahanSchema
+from schemas import GetLahanSchema, TanamGetLahanSchema, TanamSchema
 from flask import jsonify
 from flask_jwt_extended import get_jwt_identity
 
@@ -15,6 +16,38 @@ from flask_jwt_extended import get_jwt_identity
 class LahanService:
     def __init__(self):
         pass
+
+    def get_tanam_detail(self, lahan_id):
+        try:
+            tanam = TanamModel.query.filter_by(lahan_id=lahan_id).first()
+            tanam_schema = TanamSchema()
+            response_data = {
+                "error": False,
+                "message": "Lahan fetched successfully",
+                "data": tanam_schema.dump(tanam),
+            }
+            return jsonify(response_data), 200
+        except Exception as e:
+            print(e)
+
+    def get_lahan_detail(self, lahan_id):
+        try:
+            data = (
+                LahanModel.query.filter_by(id=lahan_id)
+                .filter(LahanModel.deleted_at.is_(None))
+                .first()
+            )
+
+            lahan_schema = TanamGetLahanSchema()
+            response_data = {
+                "error": False,
+                "message": "Lahan fetched successfully",
+                "data": lahan_schema.dump(data),
+            }
+            return jsonify(response_data), 200
+
+        except Exception as e:
+            print(e)
 
     def get_user_lahan(self):
         current_user = get_jwt_identity()

@@ -1,11 +1,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from model.models import LahanModel
-from schemas import PostLahanSchema
-from util.example_response import GetLahanAuthExample
-from util.example_response import AddLahanAuthExample
-from util.example_response import DeleteLahanAuthExample
-from util.example_response import DetailLahanAuthExample
+from schemas import PostLahanSchema, GetLahanSchema, TanamSchema
 
 from service.lahan_service import LahanService
 from flask_jwt_extended import jwt_required
@@ -19,7 +15,7 @@ lahan_blp = Blueprint(
 @lahan_blp.route("/lahan")
 class Lahan(MethodView):
     @jwt_required()
-    @lahan_blp.response(200, PostLahanSchema(many=True))
+    @lahan_blp.response(200, GetLahanSchema(many=True))
     def get(self):
         return LahanService().get_user_lahan()
 
@@ -29,13 +25,19 @@ class Lahan(MethodView):
         return LahanService().post_lahan(lahan_data)
 
 
+@lahan_blp.route("/tanam/<string:lahan_id>")
+class GetBibit(MethodView):
+    @jwt_required()
+    def get(self, lahan_id):
+        return LahanService().get_tanam_detail(lahan_id)
+
+
 @lahan_blp.route("/lahan/<string:lahan_id>")
 class DeleteLahan(MethodView):
     @jwt_required()
+    def get(self, lahan_id):
+        return LahanService().get_lahan_detail(lahan_id)
+
+    @jwt_required()
     def delete(self, lahan_id):
-        # lahan = LahanModel.query.get_or_404(lahan_id)
-        # return lahan
-        # lahan = lahan_id
-        # print(lahan_id)
-        # return jsonify({"hai": "hai"})
         return LahanService().delete_lahan(lahan_id)

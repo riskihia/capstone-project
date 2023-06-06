@@ -20,10 +20,6 @@ lahan_blp = Blueprint(
 class Lahan(MethodView):
     @jwt_required()
     @lahan_blp.response(200, PostLahanSchema(many=True))
-    @lahan_blp.response(200, example=GetLahanAuthExample)
-    @lahan_blp.response(200, example=AddLahanAuthExample)
-    @lahan_blp.response(200, example=DeleteLahanAuthExample)
-    @lahan_blp.response(200, example=DetailLahanAuthExample)
     def get(self):
         return LahanService().get_user_lahan()
 
@@ -33,13 +29,13 @@ class Lahan(MethodView):
         return LahanService().post_lahan(lahan_data)
 
 
-@lahan_blp.route("/lahan/<lahan_id>")
+@lahan_blp.route("/lahan/<string:lahan_id>")
 class DeleteLahan(MethodView):
     @jwt_required()
     def delete(self, lahan_id):
         # lahan = LahanModel.query.get_or_404(lahan_id)
         # return lahan
         # lahan = lahan_id
-        print(str(lahan_id))
-        return jsonify({"hai": "hai"})
-        # return LahanService().delete_lahan(lahan_id)
+        # print(lahan_id)
+        # return jsonify({"hai": "hai"})
+        return LahanService().delete_lahan(lahan_id)

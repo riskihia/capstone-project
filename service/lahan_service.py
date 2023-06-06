@@ -59,9 +59,22 @@ class LahanService:
             abort(500, message="An error occurred while inserting item")
 
     def delete_lahan(self, lahan_id):
-        # lahan = LahanModel.query.filter_by(id=lahan_id).first()
-        # is_deleted = LahanModel.query.filter(
-        #     LahanModel.deleted_at.is_(None), LahanModel.id == lahan_id
-        # ).first()
-        print(lahan_id)
-        return jsonify({"hai": "hai"})
+        lahan = LahanModel.query.filter_by(id=lahan_id).first()
+
+        if lahan is None:
+            return jsonify({"error": True, "message": "Lahan not found"})
+        else:
+            is_deleted = LahanModel.query.filter(
+                LahanModel.deleted_at.is_(None), LahanModel.id == lahan_id
+            ).first()
+            if is_deleted is None:
+                return jsonify({"error": True, "message": "Lahan Already Deleted"})
+            else:
+                try:
+                    lahan.deleted_at = datetime.datetime.now()
+                    db.session.commit()
+                except Exception as e:
+                    print(e)
+                return jsonify(
+                    {"error": False, "message": "Lahan deleted successfully"}
+                )

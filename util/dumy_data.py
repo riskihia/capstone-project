@@ -1,7 +1,14 @@
 import datetime
 import uuid
 from util.config import db
-from model.models import PenggunaModel, LahanModel, LahanImageModel
+from model.models import (
+    PenggunaModel,
+    LahanModel,
+    LahanImageModel,
+    TanamModel,
+    AktivitasModel,
+    BibitModel,
+)
 from sqlalchemy import inspect
 import random
 
@@ -21,6 +28,12 @@ def populate_data():
         insert_pengguna()
     if CekTabel("lahan_image") and not has_data(LahanImageModel):
         insert_lahan_image()
+    if CekTabel("bibit") and not has_data(BibitModel):
+        insert_bibit()
+    if CekTabel("tanam") and not has_data(TanamModel):
+        insert_tanam()
+    if CekTabel("aktivitas") and not has_data(AktivitasModel):
+        insert_aktivitas()
 
     db.session.commit()
 
@@ -112,4 +125,51 @@ def insert_lahan_image():
             updated_at=db.func.now(),
         )
         db.session.add(lahan_image)
+    db.session.commit()
+
+
+def insert_bibit():
+    bibit = BibitModel(
+        id=uuid.uuid4(),
+        nama="Bibit Tomat",
+        photo="https://example.com/bibit1.jpg",
+        deskripsi="Bibit tomat unggul",
+        harga_beli=10000,
+        jenis="Sayuran",
+        link_market="https://tani.iyabos.com/marketplace",
+    )
+    db.session.add(bibit)
+    db.session.commit()
+    return bibit
+
+
+def insert_tanam():
+    bibit = insert_bibit()
+    lahan = LahanModel.query.filter(LahanModel.deleted_at.is_(None)).first()
+    tanam = TanamModel(
+        id=uuid.uuid4(),
+        bibit_id=bibit.id,
+        lahan_id=lahan.id,
+        jarak=50,
+        status="plan",
+        tanggal_tanam=db.func.now(),
+    )
+    db.session.add(tanam)
+    db.session.commit()
+
+    return tanam
+
+
+def insert_aktivitas():
+    tanam = insert_tanam()
+
+    aktivitas = AktivitasModel(
+        id=uuid.uuid4(),
+        tanam_id=tanam.id,
+        nama="Pemupukan",
+        keterangan="Pemupukan tahap 1",
+        pupuk=1,
+        tanggal_aktivitas=db.func.now(),
+    )
+    db.session.add(aktivitas)
     db.session.commit()

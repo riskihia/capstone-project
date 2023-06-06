@@ -91,7 +91,8 @@ def post_image(self):
 
 def get_lahan_image(self):
     try:
-        data = LahanImageModel.query.filter(LahanImageModel.deleted_at.is_(None)).all()
+        data = LahanImageModel.query.filter(
+            LahanImageModel.deleted_at.is_(None)).all()
 
         lahan_image_schema = LahanImageSchema(many=True)
 

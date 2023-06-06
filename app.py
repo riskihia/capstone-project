@@ -1,18 +1,18 @@
 from flask import Flask
 from controller import *
 from datetime import datetime
-from flask_jwt_extended import JWTManager
 import pytz, os
 from util.config import db, Config
-from util import jwt_config
-from model import models
 from flask_smorest import Api
-
+from util import jwt_config
 from util.dumy_data import populate_data
 
 
 def create_app():
     app = Flask(__name__)
+
+    app.config.from_object(Config)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-key-bucket.json"
 
     @app.before_request
     def set_timezone():

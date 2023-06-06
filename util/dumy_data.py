@@ -145,13 +145,14 @@ def insert_tanam():
     bibit = insert_bibit()
     lahan = LahanModel.query.filter(LahanModel.deleted_at.is_(None)).first()
     id = uuid.uuid4()
+    tanggal_tanam = datetime.datetime.now() - datetime.timedelta(days=7)
     tanam = TanamModel(
         id=id,
         bibit_id=bibit.id,
         lahan_id=lahan.id,
         jarak=50,
         status="plan",
-        tanggal_tanam=db.func.now(),
+        tanggal_tanam=tanggal_tanam,
     )
     db.session.add(tanam)
     db.session.commit()

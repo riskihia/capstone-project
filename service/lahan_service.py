@@ -167,7 +167,7 @@ class LahanService:
 
             response_data = {
                 "error": False,
-                "message": "Lahan fetched successfully",
+                "message": "Lahan fetched ssuccessfully",
                 "data": lahan_schema.dump(data),
             }
             return jsonify(response_data), 200

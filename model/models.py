@@ -1,4 +1,4 @@
-from util.db import db
+from util.config import db
 import datetime
 import uuid
 from sqlalchemy import (
@@ -26,9 +26,9 @@ class PenggunaModel(db.Model, TimeStamp):
     id = Column(String(250), nullable=False, primary_key=True, unique=True)
     username = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False, unique=True)
-    photo = Column(String(250), unique=True)
+    photo = Column(String(250), unique=False)
     premium = Column(Boolean, nullable=True)
-    token = Column(Text, nullable=True, unique=True)
+    token = Column(Text, nullable=True)
     terakhir_login = Column(DateTime, nullable=False)
 
     lahan = db.relationship("LahanModel", back_populates="pengguna", lazy="dynamic")
@@ -39,11 +39,60 @@ class LahanModel(db.Model, TimeStamp):
     id = Column(String(250), nullable=False, primary_key=True)
     user_id = Column(String(250), ForeignKey("pengguna.id"))
     nama = Column(String(250), nullable=False)
+    photo = Column(String(250), unique=False)
     luas = Column(Double, nullable=False)
     alamat = Column(String(250), nullable=True)
-    lat = Column(Double, default=Null)
-    lon = Column(Double, default=Null)
+    lat = Column(Double, nullable=True)
+    lon = Column(Double, nullable=True)
     pengguna = db.relationship("PenggunaModel", back_populates="lahan")
+    tanam = db.relationship("TanamModel", back_populates="lahan", lazy="joined")
+
+
+class TanamModel(db.Model, TimeStamp):
+    __tablename__ = "tanam"
+    id = Column(String(250), nullable=False, primary_key=True)
+    bibit_id = Column(String(250), ForeignKey("bibit.id"))
+    lahan_id = Column(String(250), ForeignKey("lahan.id"))
+    jarak = Column(Integer, server_default="30")
+    status = Column(Enum("plan", "exec", "close"))
+    tanggal_tanam = Column(DateTime, nullable=True)
+    tanggal_panen = Column(DateTime, nullable=True)
+    jumlah_panen = Column(Integer)
+    harga_panen = Column(Integer)
+    lahan = db.relationship("LahanModel", back_populates="tanam")
+    bibit = db.relationship("BibitModel", back_populates="tanam")
+
+    aktivitas = db.relationship("AktivitasModel", back_populates="tanam", lazy="joined")
+
+
+class LahanImageModel(db.Model, TimeStamp):
+    __tablename__ = "lahan_image"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nama = Column(String(250), nullable=False)
+    photo = Column(String(250), unique=False)
+
+
+class BibitModel(db.Model, TimeStamp):
+    __tablename__ = "bibit"
+    id = Column(String(250), nullable=False, primary_key=True)
+    nama = Column(String(250))
+    photo = Column(String(250))
+    deskripsi = Column(Text, nullable=True)
+    harga_beli = Column(Integer)
+    jenis = Column(Enum("sayuran", "buah"))
+    link_market = Column(String(250), server_default="tani.iyabos.com/marketplace")
+    tanam = db.relationship("TanamModel", back_populates="bibit", lazy="joined")
+
+
+class AktivitasModel(db.Model, TimeStamp):
+    __tablename__ = "aktivitas"
+    id = Column(String(250), nullable=False, primary_key=True)
+    tanam_id = Column(String(250), ForeignKey("tanam.id"))
+    nama = Column(String(250))
+    keterangan = Column(Text, nullable=True)
+    pupuk = Column(Integer)
+    tanggal_aktivitas = Column(DateTime, nullable=True)
+    tanam = db.relationship("TanamModel", back_populates="aktivitas")
 
 
 # # Todo:: buat model tanam

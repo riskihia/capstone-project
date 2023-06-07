@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "deploy-minggu-3",
+  "private_key_id": "0ae20a6792f863190eec6ac8eae68f60e08ff16d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDnr4V2TfdV8S9i\nLJLhEdLoqkHgE/dCIq9w1kvFDreyC5G5uRbt+uTbXIDMwJSrtAuzXoyDxpBHu57v\n6+WrHBJWNew5bBEY1KEpBKUoa3EozRLg05ciXG3BlrwCRo+UMiNnKPXnqwhL9qGK\n/IrcOHRi9F0YL2UMcYvF5mhhCUfYk0aPHGgOnU15DXyOHUgpbmBu8WD0xyZlzE2c\ngCWuoUBoZNUIogmq8nmxU+6GseQeHCKGHsCJmGrMgFDIcRm+c/ImD9gSaSu7O3GZ\nCKqkbzEl0e70yC+FgzzAfJ7gjzICV9ZOsotQaGzC3PZM37A4Lf1P6echpYDOlZPC\nsybwt0/5AgMBAAECggEAQaF6GCJL71+MQa5IyVMoQNqCILznLSfwNPGvsxnRNbGL\nTWY+NZn+HJnerqHbO6ycJ+qfuXCVTIy8oFBd1hP0qdFKopWXXkZVhO4Y7xNIkftN\n3rxxsr0mJlHR3n8oix2M49s5la/ggMxTxLB3kZy4c5Ovj3tVj6nWo2/6n4pmfNXp\nif6KKdGHHYSZf2aEzKhS1eTMlkiNaxdvK+MCMcSQyWoVpxpdUHS4Df/BTWEgjV6X\nHRNHiWqGtSmtF/qRxRsFWwh+uOvVsHhIC5B88ZIqCnOONmqm6h73Ij/kEB3Twc6R\nVvmtKiQRS0CoNLkV7DKtv1OOXTtoVFCniEuNuXagxQKBgQD1mOwvKvd6yhKbiJw4\nHXelnEoD94OHnnPauI33dUX/mvs1QPlaRf3C2qqI5/2qBHeyx5G8mCUadaP3YfFK\nk5Pu3V8K70kWzEb3+fpp50TD1nZMQbQs3saYxGOhUZ8W360Zuud7mairJnPiLtPQ\n2pEdTcifUuu0VEVzHCpJ/Mev5wKBgQDxf8AOojUjEzSIPtOP1KASCaon5ia1Pxu+\niNnQR6/bb9bug8YF8GTNFa6Mzrn96prRkiTCWesBBusZrzOZSHTHuhGs1jNPPppX\nLXOK8FYvoqbDx9jLTch+9RCPkvdHOaK1jRBS1E9vi8DpIW8+ZfJz5kHpE8zK83P3\n4EF9K+qFHwKBgQCAw0RRFn3Z6sgGs4D0Cr8IHQDRQ5u6JuEm80u7SckBUggSy5Xw\nNnHtDygJz1e3I9B98xP9hOcvEC5/LOKM7wLIYVfLK9luEnvC11Tq4U20P2SWZnxI\naiRFQ/HYSirWmz7uFof2zYEY+ngXReXXwkAC1R0yKw9Y5DXlPAcP82/eUQKBgHss\nHzbXgKadGwQKlzkax3GrwD+NYVy8DViG0CEtDwKq7kLErvFEhQUc8+QZZD+fsssE\n8P63gecKMkrtUzHxBK8BthYjQhQ+59Vi9zV8E1lEai4c9fPrfkFSmNnBqaGIQfa7\nNgIpC0LnUsMVLHn04U4/uIo6cQ9qUFGy7XP8PCcdAoGAFtCR/Cqq075nHtunoS4y\nNxyrIUB5N3g2sD2ni9MYkjPDR0EYjDhJ+8TFNPg67g2qu5nbVr0fEHAFWeXhhMzo\n7BcHW9DCYYwPJeZgr0ss6fS69rjnm9HfA3V0aX0Sq6a5glUKxJ+BysT0veLyLs8A\n8+Caf48aBRqRMmzuo8AKADg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "bucket-service@deploy-minggu-3.iam.gserviceaccount.com",
+  "client_id": "117322124000307746915",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bucket-service%40deploy-minggu-3.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

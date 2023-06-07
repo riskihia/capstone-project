@@ -39,7 +39,7 @@ class AuthService:
 
             response_data = {
                 "error": False,
-                "message": "User data fetched successfully",
+                "message": "User data fetched ssuccessfully",
                 "data": pengguna_schema.dump(data),
             }
             return jsonify(response_data), 200

@@ -32,6 +32,9 @@ class PenggunaModel(db.Model, TimeStamp):
     terakhir_login = Column(DateTime, nullable=False)
 
     lahan = db.relationship("LahanModel", back_populates="pengguna", lazy="dynamic")
+    base_data_iot = db.relationship(
+        "BaseDataIotModel", back_populates="pengguna", lazy="dynamic"
+    )
 
 
 class LahanModel(db.Model, TimeStamp):
@@ -101,9 +104,6 @@ class IotModel(db.Model, TimeStamp):
     user_id = Column(String(250), ForeignKey("pengguna.id"), nullable=True)
     lahan_id = Column(String(250), ForeignKey("lahan.id"), nullable=True)
     hasil_iot = db.relationship("HasilIotModel", back_populates="iot", lazy="dynamic")
-    base_data_iot = db.relationship(
-        "BaseDataIotModel", back_populates="iot", lazy="dynamic"
-    )
 
 
 class HasilIotModel(db.Model, TimeStamp):
@@ -119,7 +119,7 @@ class BaseDataIotModel(db.Model, TimeStamp):
     __tablename__ = "base_data_iot"
     id = Column(String(250), nullable=False, primary_key=True)
     user_id = Column(String(250), ForeignKey("pengguna.id"), nullable=True)
-    iot = db.relationship("IotModel", back_populates="base_data_iot")
+    pengguna = db.relationship("PenggunaModel", back_populates="base_data_iot")
 
 
 # # Todo:: buat model tanam

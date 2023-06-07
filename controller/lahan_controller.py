@@ -25,13 +25,6 @@ class Lahan(MethodView):
         return LahanService().post_lahan(lahan_data)
 
 
-# @lahan_blp.route("/tanam/<string:lahan_id>")
-# class GetTanam(MethodView):
-#     @jwt_required()
-#     def get(self, lahan_id):
-#         return LahanService().get_tanam_detail(lahan_id)
-
-
 @lahan_blp.route("/lahan/<string:lahan_id>")
 class DeleteLahan(MethodView):
     @jwt_required()

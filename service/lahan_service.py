@@ -175,11 +175,13 @@ class LahanService:
             print(e)
 
     def post_lahan(self, lahan_data):
+        current_user = get_jwt_identity()
         try:
             lahan = LahanImageModel.query.filter(
                 LahanImageModel.deleted_at.is_(None)
             ).all()
             lahan_data["id"] = str(uuid.uuid4())
+            lahan_data["user_id"] = current_user
             random_photo = random.choice([l.photo for l in lahan])
             lahan_data["photo"] = random_photo
 

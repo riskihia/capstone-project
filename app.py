@@ -1,7 +1,8 @@
 from flask import Flask
 from controller import *
 from datetime import datetime
-import pytz, os
+import pytz
+import os
 from util.config import db, Config
 from flask_smorest import Api
 from util import jwt_config
@@ -31,6 +32,7 @@ def create_app():
         user_controller.user_blp,
         lahan_controller.lahan_blp,
         auth_controller.auth_blp,
+        plant_recomendation_controller.plant_recomendation_blp
     ]
 
     for bp in blueprints:

@@ -95,6 +95,33 @@ class AktivitasModel(db.Model, TimeStamp):
     tanam = db.relationship("TanamModel", back_populates="aktivitas")
 
 
+class IotModel(db.Model, TimeStamp):
+    __tablename__ = "iot"
+    id = Column(String(250), nullable=False, primary_key=True)
+    user_id = Column(String(250), ForeignKey("pengguna.id"), nullable=True)
+    lahan_id = Column(String(250), ForeignKey("lahan.id"), nullable=True)
+    hasil_iot = db.relationship("HasilIotModel", back_populates="iot", lazy="dynamic")
+    base_data_iot = db.relationship(
+        "BaseDataIotModel", back_populates="iot", lazy="dynamic"
+    )
+
+
+class HasilIotModel(db.Model, TimeStamp):
+    __tablename__ = "hasil_iot"
+    id = Column(String(250), nullable=False, primary_key=True)
+    iot_id = Column(String(250), ForeignKey("iot.id"))
+    kelembaban_udara = Column(Double, nullable=True)
+    suhu = Column(Double, nullable=True)
+    iot = db.relationship("IotModel", back_populates="hasil_iot")
+
+
+class BaseDataIotModel(db.Model, TimeStamp):
+    __tablename__ = "base_data_iot"
+    id = Column(String(250), nullable=False, primary_key=True)
+    user_id = Column(String(250), ForeignKey("pengguna.id"), nullable=True)
+    iot = db.relationship("IotModel", back_populates="base_data_iot")
+
+
 # # Todo:: buat model tanam
 # class TanamanModel(db.Model, TimeStamp):
 #     __tablename__ = "Tanaman"

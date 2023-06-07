@@ -17,6 +17,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = (
         "mysql+pymysql://" + USERNAME + ":" + PASSWORD + "@" + HOST + "/" + DATABASE
     )
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"
     SQLALCHEMY_TRACK_MODIFICAIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
 

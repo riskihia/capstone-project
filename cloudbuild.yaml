@@ -17,6 +17,8 @@ steps:
       - "--region"
       - "us-central1"
       - "--allow-unauthenticated"
+      - "--max-instances"
+      - "2"
       - "--add-cloudsql-instances"
       - "deploy-minggu-3:asia-southeast2:minggu-3-sql"
 images:

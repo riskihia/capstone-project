@@ -6,6 +6,7 @@ from util.config import db, Config
 from flask_smorest import Api
 from util import jwt_config
 from util.dumy_data import populate_data
+from util.config import getconn
 
 
 def create_app():
@@ -13,6 +14,9 @@ def create_app():
 
     app.config.from_object(Config)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-key-bucket.json"
+
+    # UnCommment when deploy
+    # app.config.from_object(Config) app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
 
     @app.before_request
     def set_timezone():

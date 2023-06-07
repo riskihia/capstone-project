@@ -23,5 +23,3 @@ steps:
       - "deploy-minggu-3:asia-southeast2:minggu-3-sql"
 images:
   - "gcr.io/deploy-minggu-3/cicd:$COMMIT_SHA"
-options:
-  logging: CLOUD_LOGGING_ONLY

@@ -39,11 +39,11 @@ class Config(object):
 def getconn():
     with Connector() as connector:
         conn = connector.connect(
-            "testing-flask-api:asia-southeast2:flask-api-db-instance",  # Cloud SQL Instance Connection Name
+            "deploy-minggu-3:asia-southeast2:minggu-3-sql",  # Cloud SQL Instance Connection Name
             "pymysql",
-            user="riski-db",
-            password="riski123",
-            db="tani_aid",
+            user="modular-user",
+            password="modular123",
+            db="modular",
             ip_type=IPTypes.PUBLIC,  # IPTypes.PRIVATE for private IP
         )
         return conn

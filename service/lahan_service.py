@@ -39,73 +39,75 @@ class LahanService:
                 .first()
             )
             if tanam is None:
-                return jsonify({"error": True, "message": "tanam not found"})
+                tanam = {}
+                # return jsonify({"error": True, "message": "Tanam not found"})
+            else:
+                aktivitas = (
+                    AktivitasModel.query.filter_by(tanam_id=tanam.id)
+                    .filter(BibitModel.deleted_at.is_(None))
+                    .limit(5)
+                    .all()
+                )
+                if lahan is None:
+                    return jsonify({"error": True, "message": "aktivitas not found"})
 
-            bibit = (
-                BibitModel.query.filter_by(id=tanam.bibit_id)
-                .filter(BibitModel.deleted_at.is_(None))
-                .first()
-            )
-            if bibit is None:
-                return jsonify({"error": True, "message": "bibit not found"})
+                aktivitas_list = []
 
-            aktivitas = (
-                AktivitasModel.query.filter_by(tanam_id=tanam.id)
-                .filter(BibitModel.deleted_at.is_(None))
-                .limit(5)
-                .all()
-            )
-            if lahan is None:
-                return jsonify({"error": True, "message": "aktivitas not found"})
+                for aktivitas_item in aktivitas:
+                    aktivitas_dict = {
+                        "id": aktivitas_item.id,
+                        "nama": aktivitas_item.nama,
+                        "keterangan": aktivitas_item.keterangan,
+                        "pupuk": aktivitas_item.pupuk,
+                        "tanggal_aktivitas": aktivitas_item.tanggal_aktivitas
+                        # tambahkan atribut-atribut lain yang diperlukan
+                    }
+                    aktivitas_list.append(aktivitas_dict)
 
-            aktivitas_list = []
+                tanggal_tanam = tanam.tanggal_tanam  # Hapus pemanggilan ke strptime
+                tanggal_hari_ini = datetime.now()
+                selisih = tanggal_hari_ini - tanggal_tanam
 
-            for aktivitas_item in aktivitas:
-                aktivitas_dict = {
-                    "id": aktivitas_item.id,
-                    "nama": aktivitas_item.nama,
-                    "keterangan": aktivitas_item.keterangan,
-                    "pupuk": aktivitas_item.pupuk,
-                    "tanggal_aktivitas": aktivitas_item.tanggal_aktivitas
-                    # tambahkan atribut-atribut lain yang diperlukan
+                # Menghitung selisih dalam bentuk hari, jam, dan menit
+                selisih_hari = selisih.days
+                selisih_jam = selisih.seconds // 3600
+                selisih_menit = (selisih.seconds // 60) % 60
+
+                # Menyusun hasil selisih menjadi sebuah string yang lebih detail
+                selisih_detail = (
+                    f"{selisih_hari} hari, {selisih_jam} jam, {selisih_menit} menit"
+                )
+                bibit = (
+                    BibitModel.query.filter_by(id=tanam.bibit_id)
+                    .filter(BibitModel.deleted_at.is_(None))
+                    .first()
+                )
+                if bibit is None:
+                    bibit = {}
+                    # return jsonify({"error": True, "message": "Bibit not found"})
+                else:
+                    bibit = {
+                        "id": bibit.id,
+                        "nama": bibit.nama,
+                        "photo": bibit.photo,
+                        "deskripsi": bibit.deskripsi,
+                        "harga_beli": bibit.harga_beli,
+                        "jenis": bibit.jenis,
+                        "link_market": bibit.link_market,
+                    }
+                tanam = {
+                    "id": tanam.id,
+                    "jarak": tanam.jarak,
+                    "status": tanam.status,
+                    "tanggal_tanam": tanam.tanggal_tanam,
+                    "tanggal_panen": tanam.tanggal_panen,
+                    "jumlah_panen": tanam.jumlah_panen,
+                    "harga_panen": tanam.harga_panen,
+                    "umur": selisih_detail,
+                    "bibit": bibit,
+                    "aktivitas": aktivitas_list,
                 }
-                aktivitas_list.append(aktivitas_dict)
 
-            tanggal_tanam = tanam.tanggal_tanam  # Hapus pemanggilan ke strptime
-            tanggal_hari_ini = datetime.now()
-            selisih = tanggal_hari_ini - tanggal_tanam
-
-            # Menghitung selisih dalam bentuk hari, jam, dan menit
-            selisih_hari = selisih.days
-            selisih_jam = selisih.seconds // 3600
-            selisih_menit = (selisih.seconds // 60) % 60
-
-            # Menyusun hasil selisih menjadi sebuah string yang lebih detail
-            selisih_detail = (
-                f"{selisih_hari} hari, {selisih_jam} jam, {selisih_menit} menit"
-            )
-            bibit = {
-                "id": bibit.id,
-                "nama": bibit.nama,
-                "photo": bibit.photo,
-                "deskripsi": bibit.deskripsi,
-                "harga_beli": bibit.harga_beli,
-                "jenis": bibit.jenis,
-                "link_market": bibit.link_market,
-            }
-            tanam = {
-                "id": tanam.id,
-                "jarak": tanam.jarak,
-                "status": tanam.status,
-                "tanggal_tanam": tanam.tanggal_tanam,
-                "tanggal_panen": tanam.tanggal_panen,
-                "jumlah_panen": tanam.jumlah_panen,
-                "harga_panen": tanam.harga_panen,
-                "umur": selisih_detail,
-                "bibit": bibit,
-                "aktivitas": aktivitas_list,
-            }
-            # print(tanam)
             lahan = {
                 "id": lahan.id,
                 "user_id": lahan.user_id,

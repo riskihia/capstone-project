@@ -108,7 +108,7 @@ class PostLahanSchema(TimeStampSchema):
 
 
 class PlainLahanSchema(TimeStampSchema):
-    id = fields.Str(required=True, load_only=True)
+    id = fields.Str(required=True)
     nama = fields.Str(required=True)
     photo = fields.Str()
     luas = fields.Float(required=True)

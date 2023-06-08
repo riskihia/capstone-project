@@ -38,6 +38,8 @@ def create_app():
         lahan_controller.lahan_blp,
         auth_controller.auth_blp,
         bibit_controller.bibit_blp,
+        hasil_iot_controller.hasil_iot_blp,
+        tanam_controller.tanam_blp,
     ]
 
     for bp in blueprints:

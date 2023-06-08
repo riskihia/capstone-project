@@ -117,6 +117,17 @@ class PlainLahanSchema(TimeStampSchema):
     lon = fields.Float(required=False)
 
 
+class PostTanamSchema(TimeStampSchema):
+    bibit_id = fields.Str()
+    lahan_id = fields.Str()
+
+
+class ExecTanamSchema(TimeStampSchema):
+    id = fields.Str()
+    jarak = fields.Int()
+    tanggal_tanam = fields.Date()
+
+
 class UploadSchema(TimeStampSchema):
     nama = fields.Str(required=True, load_only=True)
 

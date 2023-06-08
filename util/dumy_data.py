@@ -8,6 +8,9 @@ from model.models import (
     TanamModel,
     AktivitasModel,
     BibitModel,
+    HasilIotModel,
+    IotModel,
+    BaseDataIotModel,
 )
 from sqlalchemy import inspect
 import random
@@ -32,6 +35,10 @@ def populate_data():
         insert_bibit()
     if CekTabel("tanam") and not has_data(TanamModel):
         insert_tanam()
+    if CekTabel("base_data_iot") and not has_data(BaseDataIotModel):
+        insert_base_data_iot()
+    if CekTabel("iot") and not has_data(IotModel):
+        insert_iot()
 
     db.session.commit()
 
@@ -160,7 +167,7 @@ def insert_tanam():
             bibit_id=bibit_ids[i],
             lahan_id=lahan_ids[i],
             jarak=50,
-            status="plan",
+            status=None,
             tanggal_tanam=tanggal_tanam,
         )
         db.session.add(tanam)
@@ -186,6 +193,48 @@ def insert_tanam():
     db.session.commit()
 
     return tanam
+
+
+def insert_iot():
+    users = (
+        PenggunaModel.query.filter(PenggunaModel.deleted_at.is_(None)).limit(3).all()
+    )
+    lahans = LahanModel.query.filter(LahanModel.deleted_at.is_(None)).limit(3).all()
+    user_ids = []
+    lahan_ids = []
+    for user in users:
+        user_ids.append(user.id)
+    for lahan in lahans:
+        lahan_ids.append(lahan.id)
+
+    for i in range(3):
+        id = uuid.uuid4()
+        basedata = IotModel(
+            id=id,
+            user_id=user_ids[i],
+            lahan_id=lahan_ids[i],
+        )
+        db.session.add(basedata)
+
+    db.session.commit()
+
+
+def insert_base_data_iot():
+    users = (
+        PenggunaModel.query.filter(PenggunaModel.deleted_at.is_(None)).limit(3).all()
+    )
+    user_ids = []
+    for user in users:
+        user_ids.append(user.id)
+    for i in range(3):
+        id = uuid.uuid4()
+        basedata = BaseDataIotModel(
+            id=id,
+            user_id=user_ids[i],
+        )
+        db.session.add(basedata)
+
+    db.session.commit()
 
 
 data_bibit = [

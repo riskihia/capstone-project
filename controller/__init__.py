@@ -4,4 +4,5 @@ __all__ = [
     "auth_controller",
     "bibit_controller",
     "hasil_iot_controller",
+    "tanam_controller",
 ]

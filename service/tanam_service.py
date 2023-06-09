@@ -56,6 +56,12 @@ class TanamService:
             .filter(TanamModel.deleted_at.is_(None))
             .first()
         )
+        if tanam is None:
+            return (
+                jsonify({"error": True, "message": "Bibit atau lahan tidak ditemukan"}),
+                404,
+            )
+
         if tanam.status == "plan" or tanam.status == "exec":
             return (
                 jsonify(
@@ -64,11 +70,6 @@ class TanamService:
                         "message": "Lahan sudah mempunyai rencana atau proses tanam",
                     }
                 ),
-                404,
-            )
-        if tanam is None:
-            return (
-                jsonify({"error": True, "message": "Bibit atau lahan tidak ditemukan"}),
                 404,
             )
 

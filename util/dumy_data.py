@@ -33,8 +33,8 @@ def populate_data():
         insert_lahan_image()
     if CekTabel("bibit") and not has_data(BibitModel):
         insert_bibit()
-    if CekTabel("tanam") and not has_data(TanamModel):
-        insert_tanam()
+    # if CekTabel("tanam") and not has_data(TanamModel):
+    #     insert_tanam()
     if CekTabel("base_data_iot") and not has_data(BaseDataIotModel):
         insert_base_data_iot()
     if CekTabel("iot") and not has_data(IotModel):
@@ -149,50 +149,50 @@ def insert_bibit():
     return bibit
 
 
-def insert_tanam():
-    bibits = BibitModel.query.filter(BibitModel.deleted_at.is_(None)).limit(3).all()
-    lahans = LahanModel.query.filter(LahanModel.deleted_at.is_(None)).limit(3).all()
-    lahan_ids = []
-    bibit_ids = []
-    for lahan in lahans:
-        lahan_ids.append(lahan.id)
-    for bibit in bibits:
-        bibit_ids.append(bibit.id)
+# def insert_tanam():
+#     bibits = BibitModel.query.filter(BibitModel.deleted_at.is_(None)).limit(3).all()
+#     lahans = LahanModel.query.filter(LahanModel.deleted_at.is_(None)).limit(3).all()
+#     lahan_ids = []
+#     bibit_ids = []
+#     for lahan in lahans:
+#         lahan_ids.append(lahan.id)
+#     for bibit in bibits:
+#         bibit_ids.append(bibit.id)
 
-    for i in range(3):
-        id = uuid.uuid4()
-        tanggal_tanam = datetime.datetime.now() - datetime.timedelta(days=7)
-        tanam = TanamModel(
-            id=id,
-            bibit_id=bibit_ids[i],
-            lahan_id=lahan_ids[i],
-            jarak=50,
-            status=None,
-            tanggal_tanam=tanggal_tanam,
-        )
-        db.session.add(tanam)
-    db.session.commit()
+#     for i in range(3):
+#         id = uuid.uuid4()
+#         tanggal_tanam = datetime.datetime.now() - datetime.timedelta(days=7)
+#         tanam = TanamModel(
+#             id=id,
+#             bibit_id=bibit_ids[i],
+#             lahan_id=lahan_ids[i],
+#             jarak=50,
+#             status=None,
+#             tanggal_tanam=tanggal_tanam,
+#         )
+#         db.session.add(tanam)
+#     db.session.commit()
 
-    tanams = TanamModel.query.filter(TanamModel.deleted_at.is_(None)).limit(3).all()
-    tanam_ids = []
-    for tanam in tanams:
-        tanam_ids.append(tanam.id)
+#     tanams = TanamModel.query.filter(TanamModel.deleted_at.is_(None)).limit(3).all()
+#     tanam_ids = []
+#     for tanam in tanams:
+#         tanam_ids.append(tanam.id)
 
-    for i in range(3):
-        id = uuid.uuid4()
-        aktivitas = AktivitasModel(
-            id=id,
-            tanam_id=tanam_ids[i],
-            nama="Pemupukan",
-            keterangan="Pemupukan tahap 1",
-            pupuk=1,
-            tanggal_aktivitas=db.func.now(),
-        )
-        db.session.add(aktivitas)
+#     for i in range(3):
+#         id = uuid.uuid4()
+#         aktivitas = AktivitasModel(
+#             id=id,
+#             tanam_id=tanam_ids[i],
+#             nama="Pemupukan",
+#             keterangan="Pemupukan tahap 1",
+#             pupuk=1,
+#             tanggal_aktivitas=db.func.now(),
+#         )
+#         db.session.add(aktivitas)
 
-    db.session.commit()
+#     db.session.commit()
 
-    return tanam
+#     return tanam
 
 
 def insert_iot():

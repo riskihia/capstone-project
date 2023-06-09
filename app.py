@@ -15,10 +15,11 @@ def create_app():
     app.config.from_object(Config)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-key-bucket.json"
 
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
     # UnCommment when deploy
     # if str(os.environ.get("ENV")) == "prod":
-    # app.config.from_object(Config)
+    #     app.config.from_object(Config)
+    #     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
 
     @app.before_request
     def set_timezone():

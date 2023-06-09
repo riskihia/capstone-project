@@ -14,7 +14,6 @@ class Config(object):
     USERNAME = str(os.environ.get("DB_USERNAME"))
     PASSWORD = str(os.environ.get("DB_PASSWORD"))
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"
-
     # if str(os.environ.get("ENV")) == "prod":
     #     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"
     # else:

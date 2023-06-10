@@ -148,7 +148,14 @@ class UserLahanSchema(UserPenggunaSchema):
         # Batasi jumlah lahan menjadi 5 data
         if many:
             for item in data:
-                item["lahan"] = item["lahan"][:5] if item["lahan"] else []
+                item["lahan"] = self.filter_lahan(item["lahan"])
         else:
-            data["lahan"] = data["lahan"][:5] if data["lahan"] else []
+            data["lahan"] = self.filter_lahan(data["lahan"])
         return data
+
+    def filter_lahan(self, lahan_list):
+        filtered_lahan = []
+        for lahan in lahan_list:
+            if not lahan.get("tanam") or lahan["tanam"].get("created_at") is None:
+                filtered_lahan.append(lahan)
+        return filtered_lahan

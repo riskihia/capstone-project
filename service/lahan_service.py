@@ -204,7 +204,7 @@ class LahanService:
                 return jsonify({"error": True, "message": "Lahan Already Deleted"})
             else:
                 try:
-                    lahan.deleted_at = datetime.datetime.now()
+                    lahan.deleted_at = datetime.now()
                     db.session.commit()
                 except Exception as e:
                     print(e)

@@ -1,9 +1,9 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from service.tanam_service import TanamService
-from schemas import PostTanamSchema, ExecTanamSchema
+from schemas import PostTanamSchema, ExecTanamSchema, CloseTanamSchema
 from flask_jwt_extended import jwt_required
-from flask import jsonify
+from flask import jsonify, request
 
 tanam_blp = Blueprint(
     "tanam", __name__, url_prefix="/api/v1", description="Option in tanam"
@@ -18,9 +18,29 @@ class AddTanam(MethodView):
         return TanamService().post_tanam(data_tanam)
 
 
+@tanam_blp.route("/tanam/<id>")
+class DelTanam(MethodView):
+    @jwt_required()
+    def delete(self, id):
+        return TanamService().delete_tanam(id)
+
+
 @tanam_blp.route("/tanam/exec")
 class ExecTanam(MethodView):
     @jwt_required()
     @tanam_blp.arguments(ExecTanamSchema)
     def post(self, data_tanam):
         return TanamService().exec_post_tanam(data_tanam)
+
+
+@tanam_blp.route("/tanam/close")
+class CloseTanam(MethodView):
+    @jwt_required()
+    @tanam_blp.arguments(CloseTanamSchema)
+    def post(self, data_tanam):
+        lahan_id = request.args.get("lahan_id")
+
+        if lahan_id is None:
+            return TanamService().close_post_tanam(data_tanam)
+        else:
+            return TanamService().get_close_tanam(lahan_id)

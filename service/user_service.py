@@ -54,7 +54,7 @@ class UserService:
                     "photo": data.photo,
                     "premium": data.premium,
                     "terakhir_login": data.terakhir_login,
-                    "tanam": lahans_list,
+                    "lahan": lahans_list,
                 }
             # pengguna_schema = UserLahanSchema()
 

@@ -10,6 +10,126 @@ class TanamService:
     def __init__(self):
         pass
 
+    def delete_tanam(self, id):
+        tanam = (
+            TanamModel.query.filter_by(id=id)
+            .filter(TanamModel.deleted_at.is_(None))
+            .first()
+        )
+
+        if tanam is None:
+            return (
+                jsonify(
+                    {
+                        "error": True,
+                        "message": "Data tanam tidak ditemukan atau sudah dihapus",
+                    }
+                ),
+                404,
+            )
+        print(tanam)
+        print(tanam.deleted_at)
+        try:
+            tanam.deleted_at = datetime.datetime.now()
+            db.session.commit()
+        except Exception as e:
+            print(e)
+
+        return jsonify({"error": False, "message": "Data tanam berhasil dihapus"})
+
+    def get_close_tanam(self, lahan_id):
+        tanam = (
+            TanamModel.query.filter_by(lahan_id=lahan_id)
+            .filter(TanamModel.deleted_at.is_(None))
+            .first()
+        )
+        if tanam is None:
+            return (
+                jsonify({"error": True, "message": "Lahan tidak ditemukan"}),
+                404,
+            )
+
+        # tanam = TanamModel.query.filter_by(lahan_id=lahan_id, status="close").first()
+        tanams = (
+            TanamModel.query.filter_by(lahan_id=lahan_id, status="close")
+            .filter(TanamModel.deleted_at.is_(None))
+            .all()
+        )
+
+        if tanams is None:
+            return (
+                jsonify({"error": True, "message": "Tanam tidak ditemukan"}),
+                404,
+            )
+        tanam_list = []
+        for tanam_item in tanams:
+            bibit = (
+                BibitModel.query.filter_by(id=tanam_item.bibit_id)
+                .filter(BibitModel.deleted_at.is_(None))
+                .first()
+            )
+            tanam = {
+                "id": tanam_item.id,
+                "bibit_nama": bibit.nama,
+                "jarak": tanam_item.jarak,
+                "status": tanam_item.status,
+                "tanggal_tanam": tanam_item.tanggal_tanam,
+                "tanggal_panen": tanam_item.tanggal_panen,
+                "jumlah_panen": tanam_item.jumlah_panen,
+                "harga_panen": tanam_item.harga_panen,
+            }
+            tanam_list.append(tanam)
+        response_data = {
+            "error": False,
+            "message": "Data tanam berhasil diambil",
+            "data": tanam_list,
+        }
+        return jsonify(response_data), 200
+
+    def close_post_tanam(self, data_tanam):
+        id = data_tanam["id"]
+        tanggal_panen = data_tanam["tanggal_panen"]
+        jumlah_panen = data_tanam["jumlah_panen"]
+        harga_panen = data_tanam["harga_panen"]
+
+        tanam = (
+            TanamModel.query.filter_by(id=id)
+            .filter(TanamModel.deleted_at.is_(None))
+            .first()
+        )
+        print(tanam)
+        if tanam is None:
+            return (
+                jsonify(
+                    {
+                        "error": True,
+                        "message": "Data tanam tidak ditemukan atau status bukan 'exec'",
+                    }
+                ),
+                404,
+            )
+
+        if tanam.status != "exec":
+            return (
+                jsonify(
+                    {
+                        "error": True,
+                        "message": "Data tanam tidak ditemukan atau status bukan 'exec'",
+                    }
+                ),
+                404,
+            )
+
+        tanam.status = "close"
+        tanam.tanggal_panen = tanggal_panen
+        tanam.jumlah_panen = jumlah_panen
+        tanam.harga_panen = harga_panen
+
+        db.session.commit()
+        return jsonify(
+            {"error": False, "message": "Status tanam berhasil diubah menjadi 'close'"}
+        )
+
     def exec_post_tanam(self, data_tanam):
         id = data_tanam["id"]
         jarak = data_tanam["jarak"]
@@ -79,7 +199,7 @@ class TanamService:
             .filter(TanamModel.deleted_at.is_(None))
             .first()
         )
-        print(tanam)
+        # print(tanam)
         if tanam is None:
             data_tanam["id"] = str(uuid.uuid4())
             data_tanam["status"] = "plan"

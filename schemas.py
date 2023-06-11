@@ -128,6 +128,13 @@ class ExecTanamSchema(TimeStampSchema):
     tanggal_tanam = fields.Date()
 
 
+class CloseTanamSchema(TimeStampSchema):
+    id = fields.Str()
+    tanggal_panen = fields.Date()
+    jumlah_panen = fields.Int()
+    harga_panen = fields.Int()
+
+
 class UploadSchema(TimeStampSchema):
     nama = fields.Str(required=True, load_only=True)
 

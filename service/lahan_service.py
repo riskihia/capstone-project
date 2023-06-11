@@ -67,8 +67,12 @@ class LahanService:
                     aktivitas_list.append(aktivitas_dict)
 
                 tanggal_tanam = tanam.tanggal_tanam  # Hapus pemanggilan ke strptime
-                tanggal_hari_ini = datetime.now()
-                selisih = tanggal_hari_ini - tanggal_tanam
+                # tanggal_hari_ini = datetime.now()
+                tanggal_panen = tanam.tanggal_panen
+                if tanggal_panen is None:
+                    tanggal_panen = datetime.now()
+
+                selisih = tanggal_panen - tanggal_tanam
 
                 selisih_hari = selisih.days
                 bibit = (

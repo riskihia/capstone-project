@@ -1,6 +1,7 @@
 from util.config import db
 import datetime
-import uuid
+import uuid, pytz
+from datetime import datetime
 from sqlalchemy import (
     Column,
     Double,
@@ -16,8 +17,12 @@ from sqlalchemy import (
 
 
 class TimeStamp:
-    created_at = Column(DateTime, server_default=db.func.now())
-    updated_at = Column(DateTime, nullable=True, onupdate=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(pytz.timezone("Asia/Jakarta")))
+    updated_at = Column(
+        DateTime,
+        default=datetime.now(pytz.timezone("Asia/Jakarta")),
+        onupdate=datetime.now(pytz.timezone("Asia/Jakarta")),
+    )
     deleted_at = Column(DateTime, nullable=True)
 
 

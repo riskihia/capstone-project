@@ -52,7 +52,7 @@ class TanamService:
         # tanam = TanamModel.query.filter_by(lahan_id=lahan_id, status="close").first()
         tanams = (
             TanamModel.query.filter_by(lahan_id=lahan_id, status="close")
-            .filter(TanamModel.deleted_at.is_(None))
+            .filter(TanamModel.deleted_at.isnot(None))
             .all()
         )
 

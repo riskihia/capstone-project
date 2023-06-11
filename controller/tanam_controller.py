@@ -36,11 +36,11 @@ class ExecTanam(MethodView):
 @tanam_blp.route("/tanam/close")
 class CloseTanam(MethodView):
     @jwt_required()
+    def get(self):
+        lahan_id = request.args.get("lahan_id")
+        return TanamService().get_close_tanam(lahan_id)
+
+    @jwt_required()
     @tanam_blp.arguments(CloseTanamSchema)
     def post(self, data_tanam):
-        lahan_id = request.args.get("lahan_id")
-
-        if lahan_id is None:
-            return TanamService().close_post_tanam(data_tanam)
-        else:
-            return TanamService().get_close_tanam(lahan_id)
+        return TanamService().close_post_tanam(data_tanam)

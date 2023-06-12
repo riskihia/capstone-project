@@ -2,6 +2,9 @@ from flask import jsonify, request
 from google.cloud import storage
 import uuid
 from werkzeug.utils import secure_filename
+from schemas import LahanImageSchema
+from util.config import db
+from model.models import LahanImageModel
 
 
 def get_unique_filename(username, filename):
@@ -91,8 +94,7 @@ def post_image(self):
 
 def get_lahan_image(self):
     try:
-        data = LahanImageModel.query.filter(
-            LahanImageModel.deleted_at.is_(None)).all()
+        data = LahanImageModel.query.filter(LahanImageModel.deleted_at.is_(None)).all()
 
         lahan_image_schema = LahanImageSchema(many=True)
 

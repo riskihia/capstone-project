@@ -76,20 +76,17 @@ class TanamService:
         return jsonify({"error": False, "message": "Data tanam berhasil dihapus"})
 
     def get_close_tanam(self, lahan_id):
-        tanam = (
-            TanamModel.query.filter_by(lahan_id=lahan_id)
-            .filter(TanamModel.deleted_at.is_(None))
+        lahan = (
+            LahanModel.query.filter_by(id=lahan_id)
+            .filter(LahanModel.deleted_at.is_(None))
             .first()
         )
-        # print(tanam)
-        if not tanam:
+        print(lahan)
+        if not lahan:
             return (
-                jsonify(
-                    {"error": True, "message": "Lahan id pada Tanam tidak ditemukan"}
-                ),
+                jsonify({"error": True, "message": "Lahan id tidak ditemukan"}),
                 404,
             )
-        # tanam = TanamModel.query.filter_by(lahan_id=lahan_id, status="close").first()
         tanams = (
             TanamModel.query.filter_by(lahan_id=lahan_id, status="close")
             .filter(TanamModel.deleted_at.is_(None))
@@ -118,6 +115,7 @@ class TanamService:
             tanam = {
                 "id": tanam_item.id,
                 "bibit_nama": bibit.nama,
+                "bibit_photo": bibit.photo,
                 "jarak": tanam_item.jarak,
                 "status": tanam_item.status,
                 "tanggal_tanam": tanam_item.tanggal_tanam,

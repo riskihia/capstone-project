@@ -1,8 +1,7 @@
 from flask import Flask
 from controller import *
 from datetime import datetime
-import pytz
-import os
+import pytz, os
 from util.config import db, Config
 from flask_smorest import Api
 from util import jwt_config

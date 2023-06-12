@@ -21,7 +21,8 @@ class UserService:
             )
             if not data:
                 return (
-                    jsonify({"error": True, "message": "User not found", "data": None}),
+                    jsonify(
+                        {"error": True, "message": "User not found", "data": None}),
                     404,
                 )
             pengguna_schema = UserLahanSchema()
@@ -36,7 +37,8 @@ class UserService:
 
     def get_all_pengguna(self):
         try:
-            data = PenggunaModel.query.filter(PenggunaModel.deleted_at.is_(None)).all()
+            data = PenggunaModel.query.filter(
+                PenggunaModel.deleted_at.is_(None)).all()
 
             pengguna_schema = PlainPenggunaSchema(many=True)
 

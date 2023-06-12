@@ -1,11 +1,14 @@
+import datetime
 import random
 import uuid
+from sqlalchemy import text
+import traceback
 
-from model.models import LahanImageModel, LahanModel
+from model.models import LahanImageModel, LahanModel, TanamModel
 from util.config import db
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from flask_smorest import abort
-from schemas import PostLahanSchema
+from schemas import GetLahanSchema, TanamGetLahanSchema, TanamSchema
 from flask import jsonify
 from flask_jwt_extended import get_jwt_identity
 
@@ -14,7 +17,58 @@ class LahanService:
     def __init__(self):
         pass
 
-    def get_all_lahan(self):
+    def get_tanam_detail(self, lahan_id):
+        try:
+            lahan = (
+                LahanModel.query.filter_by(id=lahan_id)
+                .filter(LahanModel.deleted_at.is_(None))
+                .first()
+            )
+            # print(tanam)
+            lahan = {
+                "id": lahan.id,
+                "user_id": lahan.user_id,
+                "nama": lahan.nama,
+                "photo": lahan.photo,
+                "luas": lahan.luas,
+                "alamat": lahan.alamat,
+                "lat": lahan.lat,
+                "lon": lahan.lon,
+            }
+            response_data = {
+                "error": False,
+                "message": "Lahan fetched successfullys",
+                "data": lahan,
+            }
+            return jsonify(response_data), 200
+        except Exception as e:
+            print(e)
+
+    def get_lahan_detail(self, lahan_id):
+        try:
+            data = (
+                LahanModel.query.filter_by(id=lahan_id)
+                .filter(LahanModel.deleted_at.is_(None))
+                .first()
+            )
+
+            lahan_schema = TanamGetLahanSchema()
+            response_data = {
+                "error": False,
+                "message": "Lahan fetched successfully",
+                "data": lahan_schema.dump(data),
+            }
+            return jsonify(response_data), 200
+
+        except Exception as e:
+            error_message = str(e)  # Get the error message as a string
+            response_data = {
+                "error": True,
+                "message": "An error occurred: " + error_message,
+            }
+            return jsonify(response_data), 500
+
+    def get_user_lahan(self):
         current_user = get_jwt_identity()
 
         try:
@@ -24,7 +78,7 @@ class LahanService:
                 .filter(LahanModel.deleted_at.is_(None))
                 .all()
             )
-            lahan_schema = PostLahanSchema(many=True)
+            lahan_schema = GetLahanSchema(many=True)
 
             response_data = {
                 "error": False,
@@ -55,3 +109,24 @@ class LahanService:
         except SQLAlchemyError:
             # Kesalahan umum saat menyisipkan item
             abort(500, message="An error occurred while inserting item")
+
+    def delete_lahan(self, lahan_id):
+        lahan = LahanModel.query.filter_by(id=lahan_id).first()
+
+        if lahan is None:
+            return jsonify({"error": True, "message": "Lahan not found"})
+        else:
+            is_deleted = LahanModel.query.filter(
+                LahanModel.deleted_at.is_(None), LahanModel.id == lahan_id
+            ).first()
+            if is_deleted is None:
+                return jsonify({"error": True, "message": "Lahan Already Deleted"})
+            else:
+                try:
+                    lahan.deleted_at = datetime.datetime.now()
+                    db.session.commit()
+                except Exception as e:
+                    print(e)
+                return jsonify(
+                    {"error": False, "message": "Lahan deleted successfully"}
+                )

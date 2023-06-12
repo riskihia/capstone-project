@@ -1,0 +1,26 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "gcr.io/testing-flask-388406/capstone-project:$SHORT_SHA",
+        ".",
+      ]
+  # Push the container image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/testing-flask-388406/capstone-project:$SHORT_SHA"]
+  # Deploy container image to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      [
+        "run",
+        "deploy",
+        "flask-stg",
+        "--image",
+        "gcr.io/testing-flask-388406/capstone-project:$SHORT_SHA",
+        "--region",
+        "us-central1",
+      ]

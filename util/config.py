@@ -13,10 +13,10 @@ class Config(object):
     DATABASE = str(os.environ.get("DB_DATABASE"))
     USERNAME = str(os.environ.get("DB_USERNAME"))
     PASSWORD = str(os.environ.get("DB_PASSWORD"))
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"
-    # SQLALCHEMY_DATABASE_URI = (
-    #     "mysql+pymysql://" + USERNAME + ":" + PASSWORD + "@" + HOST + "/" + DATABASE
-    # )
+    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"
+    SQLALCHEMY_DATABASE_URI = (
+        "mysql+pymysql://" + USERNAME + ":" + PASSWORD + "@" + HOST + "/" + DATABASE
+    )
 
     SQLALCHEMY_TRACK_MODIFICAIONS = False
     SQLALCHEMY_RECORD_QUERIES = True

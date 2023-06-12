@@ -135,6 +135,7 @@ def insert_lahan_image():
 
 def insert_bibit():
     for dabit in data_bibit:
+        # print(dabit["harga_beli"])
         bibit = BibitModel(
             id=dabit["id"],
             nama=dabit["nama"],
@@ -244,7 +245,7 @@ data_bibit = [
         "nama": "Buncis",
         "photo": "https://abahtani.com/wp-content/uploads/2019/03/Mengenal-Tanaman-Buncis.jpg",
         "deskripsi": "random cok ocom jajaj nanan yuman",
-        "harga_beli": 9.000,
+        "harga_beli": 9000,
         "jenis": "Sayuran",
     },
     {
@@ -253,7 +254,7 @@ data_bibit = [
         "nama": "Jagung",
         "photo": "https://cdn1-production-images-kly.akamaized.net/BrN3h8F6j4I3DCkZUbYi5ZB8jV8=/1200x900/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/939191/original/097414500_1438079406-20150728-Jagung.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 9.000,
+        "harga_beli": 9000,
         "jenis": "Sayuran",
     },
     {
@@ -262,7 +263,7 @@ data_bibit = [
         "nama": "Kacang Panjang",
         "photo": "https://img.iproperty.com.my/angel-legacy/1110x624-crop/static/2021/05/1.-MANFAAT-KACANG-PANJANG.png",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 9.000,
+        "harga_beli": 9000,
         "jenis": "Sayuran",
     },
     {
@@ -271,7 +272,7 @@ data_bibit = [
         "nama": "Mangga",
         "photo": "https://nourishindonesia.com/image/cache/catalog/5370-550x550.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 22.380,
+        "harga_beli": 22380,
         "jenis": "Buah",
     },
     {
@@ -280,7 +281,7 @@ data_bibit = [
         "nama": "Kacang Merah",
         "photo": "https://www.andrafarm.co.id/_andra_farm/gambar_kelompok/a102-3.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 5.499,
+        "harga_beli": 5499,
         "jenis": "Sayuran",
     },
     {
@@ -289,7 +290,7 @@ data_bibit = [
         "nama": "Kacang hijau",
         "photo": "https://www.swadayaonline.com/images/view/-IMG_20200225_45990.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 9.000,
+        "harga_beli": 9000,
         "jenis": "Buah",
     },
     {
@@ -298,7 +299,7 @@ data_bibit = [
         "nama": "Lentil Hitam",
         "photo": "https://cairofood.id/wp-content/uploads/kupas-tuntas-mengenai-lentil-serta-manfaatnya-bagi-tubuh-lentil-hitam.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 46.000,
+        "harga_beli": 46000,
         "jenis": "Sayuran",
     },
     {
@@ -307,7 +308,7 @@ data_bibit = [
         "nama": "Delima",
         "photo": "https://id-test-11.slatic.net/p/c80a914de9b80835a386f668691ab940.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 3.000,
+        "harga_beli": 3000,
         "jenis": "Buah",
     },
     {
@@ -316,7 +317,7 @@ data_bibit = [
         "nama": "Kacang Polong",
         "photo": "https://agrotek.id/wp-content/uploads/2020/06/Klasifikasi-Dan-Morfologi-Tanaman-Kacang-Polong.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 4.250,
+        "harga_beli": 4250,
         "jenis": "Sayuran",
     },
     {
@@ -325,7 +326,7 @@ data_bibit = [
         "nama": "Anggur",
         "photo": "https://images.tokopedia.net/img/cache/850/BgtCLw/2022/4/25/da432308-88b2-4a3f-9743-0081a7b788f9.jpg?ect=4g",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 4.000,
+        "harga_beli": 4000,
         "jenis": "Buah",
     },
     {
@@ -334,7 +335,7 @@ data_bibit = [
         "nama": "Semangka",
         "photo": "https://www.budidayapetani.com/wp-content/uploads/2020/07/Tabulampot-Semangka.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 15.000,
+        "harga_beli": 15000,
         "jenis": "Buah",
     },
     {
@@ -343,7 +344,7 @@ data_bibit = [
         "nama": "Melon",
         "photo": "https://i0.wp.com/agrotek.id/wp-content/uploads/2020/03/Klasifikasi-dan-Morfologi-Tanaman-Melon.jpg?fit=640%2C467&ssl=1",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 9.000,
+        "harga_beli": 9000,
         "jenis": "Buah",
     },
     {
@@ -352,7 +353,7 @@ data_bibit = [
         "nama": "Apel",
         "photo": "https://cdn-brilio-net.akamaized.net/community/2018/09/12/13793/ayo-nikmati-apel-rebus-yang-ternyata-sangat-baik-untuk-kesehatan.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 15.000,
+        "harga_beli": 15000,
         "jenis": "Buah",
     },
     {
@@ -361,7 +362,7 @@ data_bibit = [
         "nama": "Jeruk",
         "photo": "https://www.lubera.com/images/400/Ovale-Kumquat_5.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 10.800,
+        "harga_beli": 10800,
         "jenis": "Buah",
     },
     {
@@ -370,7 +371,7 @@ data_bibit = [
         "nama": "Kelapa",
         "photo": "https://imgx.sonora.id/crop/0x0:0x0/700x465/photo/2023/04/10/istockphoto-1277125141-170667aj-20230410030406.jpg",
         "deskripsi": "random sas cok osasa sa com jajaj nanan yuman",
-        "harga_beli": 9.000,
+        "harga_beli": 9000,
         "jenis": "Buah",
     },
 ]

@@ -44,3 +44,11 @@ class CloseTanam(MethodView):
     @tanam_blp.arguments(CloseTanamSchema)
     def post(self, data_tanam):
         return TanamService().close_post_tanam(data_tanam)
+
+
+@tanam_blp.route("/tanam/rekomendasi/gambar")
+class RekomendasiTanam(MethodView):
+    @jwt_required()
+    # @tanam_blp.arguments(CloseTanamSchema)
+    def post(self, data_image):
+        return TanamService().close_post_tanam(data_image)

@@ -9,6 +9,9 @@ from flask_jwt_extended import get_jwt_identity
 class TanamService:
     def __init__(self):
         pass
+    
+    def rekomendasi_tanam(self, data_image):
+        pass
 
     def delete_tanam(self, id):
         tanam = (
@@ -43,24 +46,33 @@ class TanamService:
             .filter(TanamModel.deleted_at.is_(None))
             .first()
         )
-        if tanam is None:
+        # print(tanam)
+        if not tanam:
             return (
-                jsonify({"error": True, "message": "Lahan tidak ditemukan"}),
+                jsonify(
+                    {"error": True, "message": "Lahan id pada Tanam tidak ditemukan"}
+                ),
                 404,
             )
-
         # tanam = TanamModel.query.filter_by(lahan_id=lahan_id, status="close").first()
         tanams = (
             TanamModel.query.filter_by(lahan_id=lahan_id, status="close")
-            .filter(TanamModel.deleted_at.isnot(None))
+            .filter(TanamModel.deleted_at.is_(None))
             .all()
         )
-
-        if tanams is None:
+        print(tanams)
+        if not tanams:
             return (
-                jsonify({"error": True, "message": "Tanam tidak ditemukan"}),
+                jsonify(
+                    {
+                        "error": True,
+                        "message": "Tanam tidak ditemukan / blm ada tanaman yg panen",
+                    }
+                ),
                 404,
             )
+
+        # return "hai"
         tanam_list = []
         for tanam_item in tanams:
             bibit = (
@@ -97,7 +109,7 @@ class TanamService:
             .filter(TanamModel.deleted_at.is_(None))
             .first()
         )
-        print(tanam)
+        # print(tanam)
         if tanam is None:
             return (
                 jsonify(
@@ -200,7 +212,7 @@ class TanamService:
             .first()
         )
         # print(tanam)
-        if tanam is None:
+        if tanam is None or tanam.status == "close":
             data_tanam["id"] = str(uuid.uuid4())
             data_tanam["status"] = "plan"
             data_tanam["jarak"] = 30
@@ -225,8 +237,6 @@ class TanamService:
                 404,
             )
         return (
-            jsonify(
-                {"error": True, "message": "lahan memiliki status selain plan / exec"}
-            ),
+            jsonify({"error": True, "message": "GAGAL"}),
             404,
         )

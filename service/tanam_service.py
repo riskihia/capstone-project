@@ -9,9 +9,44 @@ from flask_jwt_extended import get_jwt_identity
 class TanamService:
     def __init__(self):
         pass
-    
-    def rekomendasi_tanam(self, data_image):
+
+    def rekomendasi_tanam_iot(self, iot_id):
         pass
+
+    def rekomendasi_tanam(self, data_image):
+        data_image = data_image["image"]
+
+        if not data_image:
+            return (
+                jsonify(
+                    {
+                        "error": True,
+                        "message": "Data tidak valid",
+                    }
+                ),
+                404,
+            )
+        bibits = BibitModel.query.filter(BibitModel.deleted_at.is_(None)).limit(5).all()
+        bibits_list = []
+        if not bibits:
+            bibits_list = []
+        for bibit_item in bibits:
+            bibit = {
+                "id": bibit_item.id,
+                "nama": bibit_item.nama,
+                "photo": bibit_item.photo,
+                "deskripsi": bibit_item.deskripsi,
+                "harga_beli": bibit_item.harga_beli,
+                "jenis": bibit_item.jenis,
+                "link_market": bibit_item.link_market,
+            }
+            bibits_list.append(bibit)
+        response_data = {
+            "error": False,
+            "message": "Berhasil mendapatkan rekomendasi bibit",
+            "data": bibits_list,
+        }
+        return jsonify(response_data), 200
 
     def delete_tanam(self, id):
         tanam = (

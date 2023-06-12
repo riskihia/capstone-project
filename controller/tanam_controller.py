@@ -1,7 +1,13 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from service.tanam_service import TanamService
-from schemas import PostTanamSchema, ExecTanamSchema, CloseTanamSchema
+from schemas import (
+    PostTanamSchema,
+    ExecTanamSchema,
+    CloseTanamSchema,
+    RekomendasiTanamSchema,
+    RekomendasiTanamIotSchema,
+)
 from flask_jwt_extended import jwt_required
 from flask import jsonify, request
 
@@ -49,6 +55,14 @@ class CloseTanam(MethodView):
 @tanam_blp.route("/tanam/rekomendasi/gambar")
 class RekomendasiTanam(MethodView):
     @jwt_required()
-    # @tanam_blp.arguments(CloseTanamSchema)
+    @tanam_blp.arguments(RekomendasiTanamSchema)
     def post(self, data_image):
-        return TanamService().close_post_tanam(data_image)
+        return TanamService().rekomendasi_tanam(data_image)
+
+
+@tanam_blp.route("/tanam/rekomendasi/iot")
+class RekomendasiIotTanam(MethodView):
+    @jwt_required()
+    @tanam_blp.arguments(RekomendasiTanamIotSchema)
+    def post(self, iot_id):
+        return TanamService().rekomendasi_tanam_iot(iot_id)

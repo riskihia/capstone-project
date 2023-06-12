@@ -135,6 +135,14 @@ class CloseTanamSchema(TimeStampSchema):
     harga_panen = fields.Int()
 
 
+class RekomendasiTanamSchema(TimeStampSchema):
+    image = fields.Str()
+
+
+class RekomendasiTanamIotSchema(TimeStampSchema):
+    iot_id = fields.Str()
+
+
 class PostIotSchema(TimeStampSchema):
     iot_id = fields.Str()
     lahan_id = fields.Str()

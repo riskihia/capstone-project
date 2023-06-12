@@ -1,7 +1,7 @@
 from model.models import PenggunaModel
 from util.config import db
 from flask_smorest import abort
-from flask_jwt_extended import create_access_token, create_access_token, get_jwt
+from flask_jwt_extended import create_access_token, get_jwt
 import uuid, datetime, re
 from google.cloud import storage
 from schemas import PlainPenggunaSchema

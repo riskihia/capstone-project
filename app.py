@@ -1,7 +1,8 @@
 from flask import Flask
 from controller import *
 from datetime import datetime
-import pytz, os
+import pytz
+import os
 from util.config import db, Config
 from flask_smorest import Api
 from util import jwt_config
@@ -38,6 +39,7 @@ def create_app():
         hasil_iot_controller.hasil_iot_blp,
         tanam_controller.tanam_blp,
         iot_controller.iot_blp,
+        plant_recomendation_controller.plant_recomendation_blp
     ]
 
     for bp in blueprints:

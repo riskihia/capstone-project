@@ -1,5 +1,5 @@
 from flask import jsonify
-from model.models import BibitModel, PenggunaModel, TanamModel, LahanModel
+from model.models import BibitModel, PenggunaModel, TanamModel, LahanModel, IotModel
 from schemas import UserLahanSchema
 from util.config import db
 import uuid, datetime
@@ -11,7 +11,43 @@ class TanamService:
         pass
 
     def rekomendasi_tanam_iot(self, iot_id):
-        pass
+        iot_id = iot_id["iot_id"]
+        iot = (
+            IotModel.query.filter_by(id=iot_id)
+            .filter(IotModel.deleted_at.is_(None))
+            .first()
+        )
+        if not iot:
+            return (
+                jsonify(
+                    {
+                        "error": True,
+                        "message": "IOT tidak ditemukan",
+                    }
+                ),
+                404,
+            )
+        bibits = BibitModel.query.filter(BibitModel.deleted_at.is_(None)).limit(5).all()
+        bibits_list = []
+        if not bibits:
+            bibits_list = []
+        for bibit_item in bibits:
+            bibit = {
+                "id": bibit_item.id,
+                "nama": bibit_item.nama,
+                "photo": bibit_item.photo,
+                "deskripsi": bibit_item.deskripsi,
+                "harga_beli": bibit_item.harga_beli,
+                "jenis": bibit_item.jenis,
+                "link_market": bibit_item.link_market,
+            }
+            bibits_list.append(bibit)
+        response_data = {
+            "error": False,
+            "message": "Berhasil mendapatkan rekomendasi bibit",
+            "data": bibits_list,
+        }
+        return jsonify(response_data), 200
 
     def rekomendasi_tanam(self, data_image):
         data_image = data_image["image"]

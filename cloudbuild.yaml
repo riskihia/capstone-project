@@ -1,26 +1,29 @@
 steps:
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
-    args:
-      [
-        "build",
-        "-t",
-        "gcr.io/testing-flask-388406/capstone-project:$SHORT_SHA",
-        ".",
-      ]
+    args: ["build", "-t", "gcr.io/deploy-minggu-3/cicd:$COMMIT_SHA", "."]
   # Push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/testing-flask-388406/capstone-project:$SHORT_SHA"]
+    args: ["push", "gcr.io/deploy-minggu-3/cicd:$COMMIT_SHA"]
   # Deploy container image to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
-      [
-        "run",
-        "deploy",
-        "flask-stg",
-        "--image",
-        "gcr.io/testing-flask-388406/capstone-project:$SHORT_SHA",
-        "--region",
-        "us-central1",
-      ]
+      - "run"
+      - "deploy"
+      - "cicd"
+      - "--image"
+      - "gcr.io/deploy-minggu-3/cicd:$COMMIT_SHA"
+      - "--region"
+      - "us-central1"
+      - "--allow-unauthenticated"
+      - "--max-instances"
+      - "2"
+      - "--add-cloudsql-instances"
+      - "deploy-minggu-3:asia-southeast2:minggu-3-sql"
+      - "--memory"
+      - "4G"
+      - "--cpu"
+      - "4"
+images:
+  - "gcr.io/deploy-minggu-3/cicd:$COMMIT_SHA"

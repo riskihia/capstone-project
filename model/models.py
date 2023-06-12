@@ -1,6 +1,7 @@
 from util.config import db
 import datetime
-import uuid
+import uuid, pytz
+from datetime import datetime
 from sqlalchemy import (
     Column,
     Double,
@@ -16,8 +17,12 @@ from sqlalchemy import (
 
 
 class TimeStamp:
-    created_at = Column(DateTime, server_default=db.func.now())
-    updated_at = Column(DateTime, nullable=True, onupdate=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(pytz.timezone("Asia/Jakarta")))
+    updated_at = Column(
+        DateTime,
+        default=datetime.now(pytz.timezone("Asia/Jakarta")),
+        onupdate=datetime.now(pytz.timezone("Asia/Jakarta")),
+    )
     deleted_at = Column(DateTime, nullable=True)
 
 
@@ -32,6 +37,9 @@ class PenggunaModel(db.Model, TimeStamp):
     terakhir_login = Column(DateTime, nullable=False)
 
     lahan = db.relationship("LahanModel", back_populates="pengguna", lazy="dynamic")
+    base_data_iot = db.relationship(
+        "BaseDataIotModel", back_populates="pengguna", lazy="dynamic"
+    )
 
 
 class LahanModel(db.Model, TimeStamp):
@@ -101,9 +109,6 @@ class IotModel(db.Model, TimeStamp):
     user_id = Column(String(250), ForeignKey("pengguna.id"), nullable=True)
     lahan_id = Column(String(250), ForeignKey("lahan.id"), nullable=True)
     hasil_iot = db.relationship("HasilIotModel", back_populates="iot", lazy="dynamic")
-    base_data_iot = db.relationship(
-        "BaseDataIotModel", back_populates="iot", lazy="dynamic"
-    )
 
 
 class HasilIotModel(db.Model, TimeStamp):
@@ -119,7 +124,7 @@ class BaseDataIotModel(db.Model, TimeStamp):
     __tablename__ = "base_data_iot"
     id = Column(String(250), nullable=False, primary_key=True)
     user_id = Column(String(250), ForeignKey("pengguna.id"), nullable=True)
-    iot = db.relationship("IotModel", back_populates="base_data_iot")
+    pengguna = db.relationship("PenggunaModel", back_populates="base_data_iot")
 
 
 # # Todo:: buat model tanam

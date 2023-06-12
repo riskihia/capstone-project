@@ -1,7 +1,7 @@
 from model.models import PenggunaModel
 from util.config import db
 from flask_smorest import abort
-from flask_jwt_extended import create_access_token, create_access_token, get_jwt
+from flask_jwt_extended import create_access_token, get_jwt
 import uuid, datetime, re
 from google.cloud import storage
 from schemas import PlainPenggunaSchema
@@ -39,7 +39,7 @@ class AuthService:
 
             response_data = {
                 "error": False,
-                "message": "User data fetched successfully",
+                "message": "User data fetched ssuccessfully",
                 "data": pengguna_schema.dump(data),
             }
             return jsonify(response_data), 200

@@ -5,10 +5,17 @@ from service.auth_service import AuthService
 from schemas import PlainPenggunaSchema, AuthLogoutSchema, AuthPenggunaSchema
 from util.example_response import GetAuthExample
 from util.example_response import LogoutAuthExample
+from flask import jsonify
 
 auth_blp = Blueprint(
     "auth", __name__, url_prefix="/api/v1", description="Option in pengguna"
 )
+
+
+@auth_blp.route("/")
+class Pengguna(MethodView):
+    def get(self):
+        return jsonify({"status": "ok"}), 200
 
 
 @auth_blp.route("/auth/logout")

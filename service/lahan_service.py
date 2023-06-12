@@ -40,14 +40,16 @@ class LahanService:
             )
             if tanam is None:
                 tanam = {}
-                # return jsonify({"error": True, "message": "Tanam not found"})
             else:
                 aktivitas = (
-                    AktivitasModel.query.filter_by(tanam_id=tanam.id)
+                    AktivitasModel.query.join(TanamModel)
+                    .join(BibitModel, TanamModel.bibit_id == BibitModel.id)
+                    .filter(TanamModel.id == tanam.id)
                     .filter(BibitModel.deleted_at.is_(None))
                     .limit(5)
                     .all()
                 )
+
                 if lahan is None:
                     return jsonify({"error": True, "message": "aktivitas not found"})
 
@@ -65,18 +67,14 @@ class LahanService:
                     aktivitas_list.append(aktivitas_dict)
 
                 tanggal_tanam = tanam.tanggal_tanam  # Hapus pemanggilan ke strptime
-                tanggal_hari_ini = datetime.now()
-                selisih = tanggal_hari_ini - tanggal_tanam
+                # tanggal_hari_ini = datetime.now()
+                tanggal_panen = tanam.tanggal_panen
+                if tanggal_panen is None:
+                    tanggal_panen = datetime.now()
 
-                # Menghitung selisih dalam bentuk hari, jam, dan menit
+                selisih = tanggal_panen - tanggal_tanam
+
                 selisih_hari = selisih.days
-                selisih_jam = selisih.seconds // 3600
-                selisih_menit = (selisih.seconds // 60) % 60
-
-                # Menyusun hasil selisih menjadi sebuah string yang lebih detail
-                selisih_detail = (
-                    f"{selisih_hari} hari, {selisih_jam} jam, {selisih_menit} menit"
-                )
                 bibit = (
                     BibitModel.query.filter_by(id=tanam.bibit_id)
                     .filter(BibitModel.deleted_at.is_(None))
@@ -103,7 +101,7 @@ class LahanService:
                     "tanggal_panen": tanam.tanggal_panen,
                     "jumlah_panen": tanam.jumlah_panen,
                     "harga_panen": tanam.harga_panen,
-                    "umur": selisih_detail,
+                    "umur": selisih_hari,
                     "bibit": bibit,
                     "aktivitas": aktivitas_list,
                 }
@@ -126,7 +124,7 @@ class LahanService:
             }
             return jsonify(response_data), 200
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return jsonify({"gagal": "gagal"}), 200
 
     def get_lahan_detail(self, lahan_id):
@@ -175,11 +173,13 @@ class LahanService:
             print(e)
 
     def post_lahan(self, lahan_data):
+        current_user = get_jwt_identity()
         try:
             lahan = LahanImageModel.query.filter(
                 LahanImageModel.deleted_at.is_(None)
             ).all()
             lahan_data["id"] = str(uuid.uuid4())
+            lahan_data["user_id"] = current_user
             random_photo = random.choice([l.photo for l in lahan])
             lahan_data["photo"] = random_photo
 
@@ -208,7 +208,7 @@ class LahanService:
                 return jsonify({"error": True, "message": "Lahan Already Deleted"})
             else:
                 try:
-                    lahan.deleted_at = datetime.datetime.now()
+                    lahan.deleted_at = datetime.now()
                     db.session.commit()
                 except Exception as e:
                     print(e)

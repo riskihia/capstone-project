@@ -108,13 +108,48 @@ class PostLahanSchema(TimeStampSchema):
 
 
 class PlainLahanSchema(TimeStampSchema):
-    id = fields.Str(required=True, load_only=True)
+    id = fields.Str(required=True)
     nama = fields.Str(required=True)
     photo = fields.Str()
     luas = fields.Float(required=True)
     alamat = fields.Str(required=False)
     lat = fields.Float(required=False)
     lon = fields.Float(required=False)
+
+
+class PostTanamSchema(TimeStampSchema):
+    bibit_id = fields.Str()
+    lahan_id = fields.Str()
+
+
+class ExecTanamSchema(TimeStampSchema):
+    id = fields.Str()
+    jarak = fields.Int()
+    tanggal_tanam = fields.Date()
+
+
+class CloseTanamSchema(TimeStampSchema):
+    id = fields.Str()
+    tanggal_panen = fields.Date()
+    jumlah_panen = fields.Int()
+    harga_panen = fields.Int()
+
+
+class RekomendasiTanamSchema(TimeStampSchema):
+    image = fields.Str()
+
+
+class RekomendasiTanamIotSchema(TimeStampSchema):
+    iot_id = fields.Str()
+
+
+class PostIotSchema(TimeStampSchema):
+    iot_id = fields.Str()
+    lahan_id = fields.Str()
+
+
+class PostIotResetSchema(TimeStampSchema):
+    id = fields.Str()
 
 
 class UploadSchema(TimeStampSchema):
@@ -137,7 +172,14 @@ class UserLahanSchema(UserPenggunaSchema):
         # Batasi jumlah lahan menjadi 5 data
         if many:
             for item in data:
-                item["lahan"] = item["lahan"][:5] if item["lahan"] else []
+                item["lahan"] = self.filter_lahan(item["lahan"])
         else:
-            data["lahan"] = data["lahan"][:5] if data["lahan"] else []
+            data["lahan"] = self.filter_lahan(data["lahan"])
         return data
+
+    def filter_lahan(self, lahan_list):
+        filtered_lahan = []
+        for lahan in lahan_list:
+            if not lahan.get("tanam") or lahan["tanam"].get("created_at") is None:
+                filtered_lahan.append(lahan)
+        return filtered_lahan

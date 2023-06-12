@@ -1,5 +1,5 @@
 from flask import jsonify
-from model.models import PenggunaModel
+from model.models import LahanModel, PenggunaModel
 from schemas import UserLahanSchema
 from util.config import db
 
@@ -20,15 +20,68 @@ class UserService:
             )
             if not data:
                 return (
-                    jsonify({"error": True, "message": "User not found", "data": None}),
+                    jsonify(
+                        {"error": True, "message": "User not found", "data": None}),
                     404,
                 )
-            pengguna_schema = UserLahanSchema()
+            else:
+                lahan = (
+                    LahanModel.query.filter_by(user_id=current_user)
+                    .filter(LahanModel.deleted_at.is_(None))
+                    .all()
+                )
+
+                lahans_list = []
+
+                if lahan is None:
+                    lahan = {}
+                else:
+                    for lahans_item in lahan:
+                        lahan = {
+                            "id": lahans_item.id,
+                            "nama": lahans_item.nama,
+                            "photo": lahans_item.photo,
+                            "luas": lahans_item.luas,
+                            "alamat": lahans_item.alamat,
+                            "lat": lahans_item.lat,
+                            "lon": lahans_item.lon,
+                        }
+                        lahans_list.append(lahan)
+
+                pengguna = {
+                    "id": data.id,
+                    "username": data.username,
+                    "email": data.email,
+                    "photo": data.photo,
+                    "premium": data.premium,
+                    "terakhir_login": data.terakhir_login,
+                    "lahan": lahans_list,
+                }
+            # pengguna_schema = UserLahanSchema()
+
+            response_data = {
+                "error": False,
+                "message": "User data fetched successfully",
+                "data": pengguna,
+            }
+            return jsonify(response_data), 200
+        except Exception as e:
+            print(e)
+
+
+    def get_all_pengguna(self):
+        try:
+            data = PenggunaModel.query.filter(
+                PenggunaModel.deleted_at.is_(None)).all()
+
+            pengguna_schema = PlainPenggunaSchema(many=True)
+
             response_data = {
                 "error": False,
                 "message": "User data fetched successfully",
                 "data": pengguna_schema.dump(data),
             }
-            return jsonify(response_data), 200
+            return response_data
         except Exception as e:
             print(e)
+

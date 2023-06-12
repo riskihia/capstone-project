@@ -13,13 +13,10 @@ class Config(object):
     DATABASE = str(os.environ.get("DB_DATABASE"))
     USERNAME = str(os.environ.get("DB_USERNAME"))
     PASSWORD = str(os.environ.get("DB_PASSWORD"))
-
-    if str(os.environ.get("ENV")) == "prod":
-        SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"
-    else:
-        SQLALCHEMY_DATABASE_URI = (
-            "mysql+pymysql://" + USERNAME + ":" + PASSWORD + "@" + HOST + "/" + DATABASE
-        )
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"
+    # SQLALCHEMY_DATABASE_URI = (
+    #     "mysql+pymysql://" + USERNAME + ":" + PASSWORD + "@" + HOST + "/" + DATABASE
+    # )
 
     SQLALCHEMY_TRACK_MODIFICAIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
@@ -45,9 +42,9 @@ def getconn():
         conn = connector.connect(
             "deploy-minggu-3:asia-southeast2:minggu-3-sql",  # Cloud SQL Instance Connection Name
             "pymysql",
-            user="modular-user",
-            password="modular123",
-            db="modular",
+            user="cicd",
+            password="cicd123",
+            db="cicd-db",
             ip_type=IPTypes.PUBLIC,  # IPTypes.PRIVATE for private IP
         )
         return conn

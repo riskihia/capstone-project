@@ -1,6 +1,5 @@
 from flask import jsonify
 from model.models import PenggunaModel
-from schemas import PlainPenggunaSchema
 from schemas import UserLahanSchema
 from util.config import db
 
@@ -35,6 +34,7 @@ class UserService:
         except Exception as e:
             print(e)
 
+
     def get_all_pengguna(self):
         try:
             data = PenggunaModel.query.filter(
@@ -50,3 +50,4 @@ class UserService:
             return response_data
         except Exception as e:
             print(e)
+

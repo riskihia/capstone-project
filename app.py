@@ -32,7 +32,8 @@ def create_app():
         user_controller.user_blp,
         lahan_controller.lahan_blp,
         auth_controller.auth_blp,
-        plant_recomendation_controller.plant_recomendation_blp
+        plant_recomendation_controller.plant_recomendation_blp,
+        soil_prediction_controller.soil_prediction_blp
     ]
 
     for bp in blueprints:

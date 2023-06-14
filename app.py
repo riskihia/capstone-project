@@ -16,7 +16,7 @@ def create_app():
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-key-bucket.json"
 
     # Uncomment for deployment
-    # app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
 
     @app.before_request
     def set_timezone():

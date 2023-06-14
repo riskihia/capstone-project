@@ -15,12 +15,12 @@ class Config(object):
     PASSWORD = str(os.environ.get("DB_PASSWORD"))
 
     # Uncomment for deployment
-    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"
 
     # Uncomment fot development
-    SQLALCHEMY_DATABASE_URI = (
-        "mysql+pymysql://" + USERNAME + ":" + PASSWORD + "@" + HOST + "/" + DATABASE
-    )
+    # SQLALCHEMY_DATABASE_URI = (
+    #     "mysql+pymysql://" + USERNAME + ":" + PASSWORD + "@" + HOST + "/" + DATABASE
+    # )
 
     SQLALCHEMY_TRACK_MODIFICAIONS = False
     SQLALCHEMY_RECORD_QUERIES = True

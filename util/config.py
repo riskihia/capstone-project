@@ -13,7 +13,11 @@ class Config(object):
     DATABASE = str(os.environ.get("DB_DATABASE"))
     USERNAME = str(os.environ.get("DB_USERNAME"))
     PASSWORD = str(os.environ.get("DB_PASSWORD"))
+
+    # Uncomment for deployment
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"
+
+    # Uncomment fot development
     # SQLALCHEMY_DATABASE_URI = (
     #     "mysql+pymysql://" + USERNAME + ":" + PASSWORD + "@" + HOST + "/" + DATABASE
     # )

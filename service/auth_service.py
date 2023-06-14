@@ -1,13 +1,13 @@
-from model.models import PenggunaModel
-from util.config import db
+from flask import jsonify
 from flask_smorest import abort
 from flask_jwt_extended import create_access_token, get_jwt
-import uuid, datetime, re
+from flask_jwt_extended import get_jwt_identity
+from model.models import PenggunaModel, LahanModel
+from util.config import db
 from google.cloud import storage
 from schemas import PlainPenggunaSchema
-
 from util.blocklist import BLOCKLIST
-from flask import jsonify
+import uuid, datetime, re
 
 
 class AuthService:
@@ -130,3 +130,60 @@ class AuthService:
             return jsonify(response), 200
         else:
             abort(404, message="User not found.")
+
+    def get_user_detail(self):
+        current_user = get_jwt_identity()
+        try:
+            data = (
+                PenggunaModel.query.filter_by(id=current_user)
+                .filter(PenggunaModel.deleted_at.is_(None))
+                .first()
+            )
+            if not data:
+                return (
+                    jsonify({"error": True, "message": "User not found", "data": None}),
+                    404,
+                )
+            else:
+                lahan = (
+                    LahanModel.query.filter_by(user_id=current_user)
+                    .filter(LahanModel.deleted_at.is_(None))
+                    .all()
+                )
+
+                lahans_list = []
+
+                if lahan is None:
+                    lahan = {}
+                else:
+                    for lahans_item in lahan:
+                        lahan = {
+                            "id": lahans_item.id,
+                            "nama": lahans_item.nama,
+                            "photo": lahans_item.photo,
+                            "luas": lahans_item.luas,
+                            "alamat": lahans_item.alamat,
+                            "lat": lahans_item.lat,
+                            "lon": lahans_item.lon,
+                        }
+                        lahans_list.append(lahan)
+
+                pengguna = {
+                    "id": data.id,
+                    "username": data.username,
+                    "email": data.email,
+                    "photo": data.photo,
+                    "premium": data.premium,
+                    "terakhir_login": data.terakhir_login,
+                    "lahan": lahans_list,
+                }
+            # pengguna_schema = UserLahanSchema()
+
+            response_data = {
+                "error": False,
+                "message": "User data fetched successfully",
+                "data": pengguna,
+            }
+            return jsonify(response_data), 200
+        except Exception as e:
+            print(e)

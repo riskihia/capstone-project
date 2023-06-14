@@ -14,6 +14,17 @@ class HasilIotService:
         pass
 
     def tambah_hasil_iot(self, suhu, kelembaban_udara, iot_id):
+        try:
+            suhu = float(suhu)
+            kelembaban_udara = float(kelembaban_udara)
+        except ValueError:
+            return jsonify({"error": True, "message": "Data tidak valid"})
+
+        if suhu > 43.67 or suhu < 8.82:
+            return jsonify({"error": True, "message": "Data tidak valid"})
+        if kelembaban_udara > 99.98 or kelembaban_udara < 14.25:
+            return jsonify({"error": True, "message": "Data tidak valid"})
+
         iot = (
             IotModel.query.filter_by(id=iot_id)
             .filter(IotModel.deleted_at.is_(None))

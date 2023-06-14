@@ -2,23 +2,28 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required
 from service.auth_service import AuthService
-from schemas import PlainPenggunaSchema, AuthLogoutSchema, AuthPenggunaSchema
-from util.example_response import GetAuthExample
-from util.example_response import LogoutAuthExample
-from flask import jsonify
+from schemas import (
+    AuthLogoutSchema,
+    AuthPenggunaSchema,
+    UserLahanSchema,
+)
+from util.example_response import GetAuthExample, UserAuthExample, LogoutAuthExample
 
 auth_blp = Blueprint(
     "auth", __name__, url_prefix="/api/v1", description="Option in pengguna"
 )
 
 
-@auth_blp.route("/")
-class Pengguna(MethodView):
+@auth_blp.route("/user")
+class GetUser(MethodView):
+    @jwt_required()
+    @auth_blp.response(200, UserLahanSchema(many=True))
+    @auth_blp.response(200, example=UserAuthExample)
     def get(self):
-        return jsonify({"status": "ok"}), 200
+        return AuthService().get_user_detail()
 
 
-@auth_blp.route("/auth/logout")
+@auth_blp.route("/logout")
 class PenggunaAuthLogout(MethodView):
     @jwt_required()
     @auth_blp.arguments(AuthLogoutSchema)
@@ -30,11 +35,6 @@ class PenggunaAuthLogout(MethodView):
 
 @auth_blp.route("/auth")
 class PenggunaAuth(MethodView):
-    @auth_blp.response(200, PlainPenggunaSchema(many=True))
-    def get(self):
-        # return UserService().get_all_pengguna()
-        return AuthService().get_all_pengguna()
-
     @auth_blp.arguments(AuthPenggunaSchema)
     @auth_blp.response(
         202,

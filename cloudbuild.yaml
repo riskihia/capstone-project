@@ -22,7 +22,7 @@ steps:
       - "--add-cloudsql-instances"
       - "deploy-minggu-3:asia-southeast2:minggu-3-sql"
       - "--memory"
-      - "1GiB"
+      - "1G"
       - "--cpu"
       - "1"
 images:

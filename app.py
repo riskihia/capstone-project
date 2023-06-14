@@ -15,7 +15,8 @@ def create_app():
     app.config.from_object(Config)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-key-bucket.json"
 
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
+    # Uncomment for deployment
+    # app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"creator": getconn}
 
     @app.before_request
     def set_timezone():
@@ -31,7 +32,6 @@ def create_app():
         populate_data()
 
     blueprints = [
-        user_controller.user_blp,
         lahan_controller.lahan_blp,
         auth_controller.auth_blp,
         bibit_controller.bibit_blp,
@@ -39,6 +39,7 @@ def create_app():
         tanam_controller.tanam_blp,
         iot_controller.iot_blp,
         plant_recomendation_controller.plant_recomendation_blp,
+        base_controller.base_blp,
     ]
 
     for bp in blueprints:

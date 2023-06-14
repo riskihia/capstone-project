@@ -18,7 +18,7 @@ Integration with Flask-smorest, Flask-GoogleStorage, Flask-SQLalchemy,and Flask-
 
 - SQL ORM: [Flask-SQLalchemy](https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/)
 
-- Google Cloud Storage: [Flask-GoogleStorage](<http://flask.pocoo.org/docs/0.12/testing/](https://flask-googlestorage.readthedocs.io/en/latest/)>)
+- Google Cloud Storage: [Flask-GoogleStorage](https://flask-googlestorage.readthedocs.io/en/latest/)
 
 - Jwt: [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/stable/)
 
@@ -85,7 +85,3 @@ JWT_SECRET_KEY = "???"
 JWT_TOKEN_LOCATION = ["headers"]
 JWT_HEADER_NAME = "Authorization"
 JWT_HEADER_TYPE = "Bearer"
-
-```
-
-```

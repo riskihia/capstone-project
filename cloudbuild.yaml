@@ -22,8 +22,8 @@ steps:
       - "--add-cloudsql-instances"
       - "deploy-minggu-3:asia-southeast2:minggu-3-sql"
       - "--memory"
-      - "4G"
+      - "1G"
       - "--cpu"
-      - "4"
+      - "1"
 images:
   - "gcr.io/deploy-minggu-3/cicd:$COMMIT_SHA"

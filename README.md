@@ -85,3 +85,9 @@ JWT_SECRET_KEY = "???"
 JWT_TOKEN_LOCATION = ["headers"]
 JWT_HEADER_NAME = "Authorization"
 JWT_HEADER_TYPE = "Bearer"
+
+# Capstone Google Cloud Architecture
+
+![image](cloud.PNG)
+
+Our project on Google Cloud incorporates various technologies to optimize its architecture. We utilize Flask, a Python web framework, for developing the API. To ensure smooth deployment, we rely on Cloud Run, a serverless platform for containerized applications. For structured data storage, we employ Cloud SQL, a scalable and highly available relational database service. Cloud Storage is utilized for storing unstructured data, offering a cost-effective and reliable solution. Streamlining the deployment process to Cloud Run is achieved through Cloud Build, a versatile service for building, testing, and deploying applications

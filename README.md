@@ -47,7 +47,7 @@ pip install -r requirements.txt
 ### Run flask for develop
 
 ```
-$ python webapp/run.py
+$ flask run
 ```
 
 In flask, Default port is `5000`
